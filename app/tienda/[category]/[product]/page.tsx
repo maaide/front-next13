@@ -3,7 +3,11 @@ import { ICategory, IProduct } from "@/interfaces"
 import Cookies from 'js-cookie'
 
 async function fetchProduct (product: string) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${product}`)
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${product}`, {
+    next: {
+      revalidate: 60
+    }
+  })
   return res.json()
 }
 

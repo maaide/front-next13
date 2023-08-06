@@ -2,7 +2,11 @@ import PageCategory from "@/components/categories/PageCategory"
 import { ICategory, IProduct } from "@/interfaces"
 
 async function fetchCategory (category: string) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories/${category}`)
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories/${category}`, {
+    next: {
+      revalidate: 60
+    }
+  })
   return res.json()
 }
 
