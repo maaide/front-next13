@@ -25,6 +25,10 @@ const DesignProvider: React.FC<PropsWithChildren> = ({ children }) => {
       products: {
         title: '',
         sectionProducts: 'Todos los productos'
+      },
+      seo: {
+        metaTitle: '',
+        metaDescription: ''
       }
     },
     product: {
@@ -38,7 +42,9 @@ const DesignProvider: React.FC<PropsWithChildren> = ({ children }) => {
     },
     shop: {
       title: '',
-      description: ''
+      description: '',
+      metaTitle: '',
+      metaDescription: ''
     },
     subscription: {
       title: ''

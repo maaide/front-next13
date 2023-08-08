@@ -12,6 +12,10 @@ export interface IDesign {
             title: string
             sectionProducts: string
             category?: string
+        },
+        seo: {
+            metaTitle: string
+            metaDescription: string
         }
     }
     product: {
@@ -28,6 +32,8 @@ export interface IDesign {
         title: string
         description: string
         banner?: { public_id: string, url: string }
+        metaTitle: string
+        metaDescription: string
     }
     subscription: {
         title: string
