@@ -158,6 +158,9 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
                   }}>
                     <div className='mt-auto text-[15px] font-medium text-[#1c1b1b] tracking-widest mb-auto dark:text-white'>TIENDA</div>
                   </Link>
+                  <Link className='mt-auto text-[15px] font-medium text-[#1c1b1b] tracking-widest mb-auto dark:text-white' href='/blog'>
+                    <div className='mt-auto text-[15px] font-medium text-[#1c1b1b] tracking-widest mb-auto dark:text-white'>BLOG</div>
+                  </Link>
                   <Link className='mt-auto text-[15px] font-medium text-[#1c1b1b] tracking-widest mb-auto dark:text-white' href='/contacto'>
                     <div className='mt-auto text-[15px] font-medium text-[#1c1b1b] tracking-widest mb-auto dark:text-white'>CONTACTO</div>
                   </Link>
@@ -460,6 +463,13 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
                 }
               </div>
             </div>
+            <Link className={`${menuButtons} transition-opacity duration-200 mb-4 font-montserrat tracking-widest text-[#1c1b1b] font-medium flex pb-2 min-w-[250px] border-b dark:border-neutral-600 dark:text-white`} onClick={() => {
+              setMenu('w-0 pl-0 pr-0 pt-6 pb-6')
+              setMenuButtons('opacity-0')
+              setTimeout(() => {
+                setIndex('hidden')
+              }, 140)
+            }} href='/blog'>BLOG<svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 1024 1024" className="ml-auto w-4 text-lg text-neutral-500" xmlns="http://www.w3.org/2000/svg"><path d="M765.7 486.8L314.9 134.7A7.97 7.97 0 0 0 302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 0 0 0-50.4z"></path></svg></Link>
             <Link className={`${menuButtons} transition-opacity duration-200 mb-4 font-montserrat tracking-widest text-[#1c1b1b] font-medium flex pb-2 min-w-[250px] border-b dark:border-neutral-600 dark:text-white`} onClick={() => {
               setMenu('w-0 pl-0 pr-0 pt-6 pb-6')
               setMenuButtons('opacity-0')
