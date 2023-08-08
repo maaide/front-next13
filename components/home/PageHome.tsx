@@ -1,3 +1,4 @@
+"use client"
 import React from 'react'
 import { Categories, HomeSlider, Spinner } from '../ui'
 import { useCategories } from '@/hooks'
