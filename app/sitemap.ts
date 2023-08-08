@@ -1,17 +1,7 @@
-import { ICategory, IPost, IProduct } from '@/interfaces';
+import { ICategory, IPost, IProduct } from '@/interfaces'
 import { MetadataRoute } from 'next'
-
-type Route = {
-  url: string;
-  lastModified: string;
-};
  
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  
-  const routesMap = [''].map((route) => ({
-    url: `${process.env.NEXT_PUBLIC_WEB_URL}${route}`,
-    lastModified: new Date().toISOString()
-  }))
 
   async function getCategories(): Promise<ICategory[]> {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`, {
@@ -22,12 +12,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     return res.json()
   }
   
-  const categoriesPromise = getCategories().then((categories) =>
-    categories.map(category => ({
-      url: `${process.env.NEXT_PUBLIC_WEB_URL}/tienda/${category.slug}`,
-      lastModified: new Date().toISOString()
-    }))
-  )
+  const categories = await getCategories()
+  const categoriesUrls =
+    categories.map(category => {
+      return {
+        url: `${process.env.NEXT_PUBLIC_WEB_URL}/tienda/${category.slug}`,
+        lastModified: new Date()
+      }
+    }) ?? []
 
   async function getProducts(): Promise<IProduct[]> {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`, {
@@ -38,15 +30,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     return res.json()
   }
 
-  const productsPromise = getProducts().then((products) =>
-    products.map(product => ({
-      url: `${process.env.NEXT_PUBLIC_WEB_URL}/tienda/${product.category.slug}/${product.slug}`,
-      lastModified: new Date().toISOString()
-    }))
-  )
+  const products = await getProducts()
+  const productsUrls =
+    products.map(product => {
+      return {
+        url: `${process.env.NEXT_PUBLIC_WEB_URL}/tienda/${product.category.slug}/${product.slug}`,
+        lastModified: new Date()
+      }
+    }) ?? []
 
   async function getPosts(): Promise<IPost[]> {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/posts`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`, {
       next: {
         revalidate: 60
       }
@@ -54,20 +48,30 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     return res.json()
   }
 
-  const postsPromise = getPosts().then((posts) =>
-    posts.map(post => ({
-      url: `${process.env.NEXT_PUBLIC_WEB_URL}/blog/${post._id}`,
-      lastModified: new Date().toISOString()
-    }))
-  )
-
-  let fetchedRoutes: Route[] = []
-
-  try {
-    fetchedRoutes = (await Promise.all([categoriesPromise, productsPromise, postsPromise])).flat()
-  } catch (error) {
-    throw JSON.stringify(error, null, 2)
-  }
+  const posts = await getPosts()
+  const postsUrls =
+    posts.map(post => {
+      return {
+        url: `${process.env.NEXT_PUBLIC_WEB_URL}/blog/${post._id}`,
+        lastModified: new Date()
+      }
+    }) ?? []
   
-  return [...routesMap, ...fetchedRoutes]
+  return [
+    {
+      url: process.env.NEXT_PUBLIC_WEB_URL!,
+      lastModified: new Date()
+    },
+    {
+      url: `${process.env.NEXT_PUBLIC_WEB_URL}/tienda`,
+      lastModified: new Date ()
+    },
+    {
+      url: `${process.env.NEXT_PUBLIC_WEB_URL}/blog`,
+      lastModified: new Date ()
+    },
+    ...categoriesUrls,
+    ...productsUrls,
+    ...postsUrls
+  ]
 }

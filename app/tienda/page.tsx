@@ -1,4 +1,5 @@
 import PageShop from "@/components/shop/PageShop"
+import { Metadata } from "next"
 
 async function fetchCategories () {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`, {
