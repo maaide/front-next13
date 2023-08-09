@@ -27,7 +27,8 @@ export async function generateMetadata() {
   }).then(res => res.json())
 
   return {
-    title: design.home.seo.metaTitle
+    title: design.home.seo.metaTitle,
+    description: design.home.seo.metaDescription
   }
 }
 
