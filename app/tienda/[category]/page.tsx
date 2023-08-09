@@ -29,7 +29,7 @@ export async function generateMetadata({
   const id = params.category
   const category: ICategory = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories/${id}`, {
     next: {
-      revalidate: 60
+      revalidate: 43200
     }
   }).then((res) => res.json())
 

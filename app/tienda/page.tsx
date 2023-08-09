@@ -23,7 +23,7 @@ async function fetchProducts () {
 export async function generateMetadata(): Promise<Metadata> {
   const design: IDesign = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/design`, {
     next: {
-      revalidate: 60
+      revalidate: 43200
     }
   }).then((res) => res.json())
 

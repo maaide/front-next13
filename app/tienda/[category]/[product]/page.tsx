@@ -6,7 +6,7 @@ import type { Metadata } from 'next'
 async function fetchProduct (product: string) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${product}`, {
     next: {
-      revalidate: 60
+      revalidate: 43200
     }
   })
   return res.json()
