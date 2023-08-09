@@ -28,11 +28,11 @@ export async function generateMetadata(): Promise<Metadata> {
   }).then(res => res.json())
 
   return {
-    title: design.home.seo.metaTitle,
-    description: design.home.seo.metaDescription,
+    title: design.shop.metaTitle,
+    description: design.shop.metaDescription,
     openGraph: {
-      title: design.home.seo.metaTitle,
-      description: design.home.seo.metaDescription
+      title: design.shop.metaTitle,
+      description: design.shop.metaDescription
     }
   }
 }
