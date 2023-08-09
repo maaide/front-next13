@@ -32,7 +32,8 @@ export async function generateMetadata(): Promise<Metadata> {
     description: design.shop.metaDescription,
     openGraph: {
       title: design.shop.metaTitle,
-      description: design.shop.metaDescription
+      description: design.shop.metaDescription,
+      images: [design.shop.banner?.url ? design.shop.banner.url : '']
     }
   }
 }

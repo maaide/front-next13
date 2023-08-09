@@ -14,7 +14,8 @@ export async function generateMetadata(): Promise<Metadata> {
     description: design.home.seo.metaDescription,
     openGraph: {
       title: design.home.seo.metaTitle,
-      description: design.home.seo.metaDescription
+      description: design.home.seo.metaDescription,
+      images: [design.home.banner.length ? design.home.banner[0].image.url : '']
     }
   }
 }
