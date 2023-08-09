@@ -1,5 +1,6 @@
 import PageShop from "@/components/shop/PageShop"
 import { IDesign } from "@/interfaces"
+import { Metadata } from "next"
 
 async function fetchCategories () {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`, {
@@ -19,7 +20,7 @@ async function fetchProducts () {
   return res.json()
 }
 
-export async function generateMetadata() {
+export async function generateMetadata(): Promise<Metadata> {
   const design: IDesign = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/design`, {
     next: {
       revalidate: 43200
@@ -28,7 +29,11 @@ export async function generateMetadata() {
 
   return {
     title: design.home.seo.metaTitle,
-    description: design.home.seo.metaDescription
+    description: design.home.seo.metaDescription,
+    openGraph: {
+      title: design.home.seo.metaTitle,
+      description: design.home.seo.metaDescription
+    }
   }
 }
 
