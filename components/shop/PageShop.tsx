@@ -72,13 +72,7 @@ export default function PageShop ({ categories, products }: { categories: ICateg
       </div>
       {
         products.length === 0
-          ? (
-            <div className="flex w-full">
-              <div className="m-auto mt-16 mb-16">
-                <Spinner />
-              </div>
-            </div>
-          )
+          ? <div className='flex px-4 mb-4 w-full'><div className="w-[1280px] m-auto"><p>No hay productos</p></div></div>
           : (
             <div className='flex'>
               <div className='w-1280 m-auto flex gap-2 pt-4 pb-4 flex-wrap'>
