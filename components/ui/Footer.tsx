@@ -80,7 +80,7 @@ export const Footer = () => {
             {
               categories.length
                 ? categories.map(category => (
-                  <Link href={`/tienda/${category.slug}`}>{category.category}</Link>
+                  <Link key={category._id} href={`/tienda/${category.slug}`}>{category.category}</Link>
                 ))
                 : ''
             }
