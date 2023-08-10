@@ -18,11 +18,11 @@ export async function generateMetadata(): Promise<Metadata> {
   const design: IDesign = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/design`).then(res => res.json())
 
   return {
-    title: design.shop.metaTitle,
-    description: design.shop.metaDescription,
+    title: design.shop.metaTitle !== '' ? design.shop.metaTitle : 'Tienda',
+    description: design.shop.metaDescription !== '' ? design.shop.metaDescription : 'Aquí encontraras los productos de la tienda',
     openGraph: {
-      title: design.shop.metaTitle,
-      description: design.shop.metaDescription,
+      title: design.shop.metaTitle !== '' ? design.shop.metaTitle : 'Tienda',
+      description: design.shop.metaDescription !== '' ? design.shop.metaDescription : 'Aquí encontraras los productos de la tienda',
       images: [design.shop.banner?.url ? design.shop.banner.url : '']
     }
   }
