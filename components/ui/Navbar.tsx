@@ -306,7 +306,7 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
                             : theme === 'dark'
                               ? <Link href='/'><Image onLoad={() => setLogoLoad(true)} className='w-96 h-[42px] py-0.5' src={`${storeData.logoWhite.url}`} alt='Logo' width={155} height={53.72} /></Link>
                               : <Link href='/'><Image onLoad={() => setLogoLoad(true)} className='w-96 h-[42px] py-0.5' src={`${storeData.logo.url}`} alt='Logo' width={155} height={53.72} /></Link>
-                          : <Link href='/'><div onLoad={() => setLogoLoad(true)} className='h-[42px] w-1 flex'><p className='m-auto text-xl font-semibold'>TIENDA</p></div></Link>
+                          : <Link href='/'><div onLoad={() => setLogoLoad(true)} className='h-[42px] flex'><p className='m-auto text-xl font-semibold'>TIENDA</p></div></Link>
                     }
                   </div>
                   <div className='flex w-full justify-end gap-4'>
