@@ -16,7 +16,7 @@ async function viewContent (product: IProduct) {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ name: product.name, price: product.price, category: product.category, url: product.slug, fbp: Cookies.get('_fbp'), fbc: Cookies.get('_fbc') })
+    body: JSON.stringify({ name: product.name, price: product.price, category: product.category.category, url: product.slug, fbp: Cookies.get('_fbp'), fbc: Cookies.get('_fbc') })
   })
 }
  

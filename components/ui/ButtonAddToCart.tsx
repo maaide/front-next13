@@ -52,7 +52,7 @@ export const ButtonAddToCart: React.FC<Props> = ({ tempCartProduct }) => {
         offerPrice = filter[0]
       }
     }
-    await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/add-cart`, { name: tempCartProduct.name, price: offerPrice !== undefined ? Math.floor((tempCartProduct.price * tempCartProduct.quantity) / 100) * (100 - offerPrice.descount) : tempCartProduct.price * tempCartProduct.quantity, quantity: tempCartProduct.quantity, category: tempCartProduct.category, fbp: Cookies.get('_fbp'), fbc: Cookies.get('_fbc') })
+    await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/add-cart`, { name: tempCartProduct.name, price: offerPrice !== undefined ? Math.floor((tempCartProduct.price * tempCartProduct.quantity) / 100) * (100 - offerPrice.descount) : tempCartProduct.price * tempCartProduct.quantity, quantity: tempCartProduct.quantity, category: tempCartProduct.category.category, fbp: Cookies.get('_fbp'), fbc: Cookies.get('_fbc') })
     if (status === 'authenticated') {
       const cartLocal = JSON.parse(localStorage.getItem('cart')!)
       await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/account/${user._id}`, { cart: cartLocal })
