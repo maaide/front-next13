@@ -2,21 +2,15 @@ import PageCategory from "@/components/categories/PageCategory"
 import { ICategory, IProduct } from "@/interfaces"
 import { Metadata } from "next"
 
+export const revalidate = 60
+
 async function fetchCategory (category: string) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories/${category}`, {
-    next: {
-      revalidate: 60
-    }
-  })
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories/${category}`)
   return res.json()
 }
 
 async function fetchProducts (category: string) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products-category/${category}`, {
-    next: {
-      revalidate: 60
-    }
-  })
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products-category/${category}`)
   return res.json()
 }
 
@@ -27,11 +21,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
 
   const id = params.category
-  const category: ICategory = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories/${id}`, {
-    next: {
-      revalidate: 43200
-    }
-  }).then((res) => res.json())
+  const category: ICategory = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories/${id}`).then((res) => res.json())
 
   return {
     title: category.titleSeo,

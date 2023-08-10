@@ -1,13 +1,10 @@
 import { PageBlog } from '@/components/blog'
 import { IPost } from '@/interfaces'
-import Image from 'next/image'
+
+export const revalidate = 60
 
 async function fetchPosts () {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`, {
-    next: {
-      revalidate: 60
-    }
-  })
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`)
   return res.json()
 }
 

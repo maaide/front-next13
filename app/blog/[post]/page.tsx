@@ -2,21 +2,15 @@ import PagePost from "@/components/blog/PagePost"
 import { IPost } from "@/interfaces"
 import { Metadata } from "next"
 
+export const revalidate = 60
+
 async function fetchPost (post: string) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/post/${post}`, {
-    next: {
-      revalidate: 60
-    }
-  })
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/post/${post}`)
   return res.json()
 }
 
 async function fetchPosts () {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`, {
-    next: {
-      revalidate: 60
-    }
-  })
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`)
   return res.json()
 }
 
@@ -27,11 +21,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
 
   const id = params.post
-  const post: IPost = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/post/${id}`, {
-    next: {
-      revalidate: 43200
-    }
-  }).then((res) => res.json())
+  const post: IPost = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/post/${id}`).then((res) => res.json())
 
   return {
     title: post.titleSeo,

@@ -3,12 +3,10 @@ import { IProduct } from "@/interfaces"
 import Cookies from 'js-cookie'
 import type { Metadata } from 'next'
 
+export const revalidate = 60
+
 async function fetchProduct (product: string) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${product}`, {
-    next: {
-      revalidate: 60
-    }
-  })
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${product}`)
   return res.json()
 }
 
@@ -29,11 +27,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
 
   const id = params.product
-  const product: IProduct = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${id}`, {
-    next: {
-      revalidate: 43200
-    }
-  }).then((res) => res.json())
+  const product: IProduct = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${id}`).then((res) => res.json())
  
   return {
     title: product.titleSeo,
