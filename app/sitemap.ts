@@ -6,7 +6,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   async function getCategories(): Promise<ICategory[]> {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`, {
       next: {
-        revalidate: 43200
+        revalidate: 60
       }
     })
     return res.json()
@@ -24,7 +24,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   async function getProducts(): Promise<IProduct[]> {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`, {
       next: {
-        revalidate: 43200
+        revalidate: 60
       }
     })
     return res.json()
@@ -42,7 +42,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   async function getPosts(): Promise<IPost[]> {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`, {
       next: {
-        revalidate: 43200
+        revalidate: 60
       }
     })
     return res.json()
