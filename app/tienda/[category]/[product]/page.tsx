@@ -30,11 +30,11 @@ export async function generateMetadata({
   const product: IProduct = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${id}`).then((res) => res.json())
  
   return {
-    title: product.titleSeo,
-    description: product.descriptionSeo,
+    title: product.titleSeo !== '' ? product.titleSeo : product.name,
+    description: product.descriptionSeo !== '' ? product.descriptionSeo : `Esta es la pagina del producto ${product.name}`,
     openGraph: {
-      title: product.titleSeo,
-      description: product.descriptionSeo,
+      title: product.titleSeo !== '' ? product.titleSeo : product.name,
+      description: product.descriptionSeo !== '' ? product.descriptionSeo : `Esta es la pagina del producto ${product.name}`,
       images: [product.images[0].url],
     },
   }

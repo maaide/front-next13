@@ -24,11 +24,11 @@ export async function generateMetadata({
   const category: ICategory = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories/${id}`).then((res) => res.json())
 
   return {
-    title: category.titleSeo,
-    description: category.descriptionSeo,
+    title: category.titleSeo !== '' ? category.titleSeo : category.category,
+    description: category.descriptionSeo !== '' ? category.descriptionSeo : `Aquí encontraras los productos de la categoria ${category.category}`,
     openGraph: {
-      title: category.titleSeo,
-      description: category.descriptionSeo,
+      title: category.titleSeo !== '' ? category.titleSeo : category.category,
+      description: category.descriptionSeo !== '' ? category.descriptionSeo : `Aquí encontraras los productos de la categoria ${category.category}`,
       images: [category.image?.url ? category.image?.url : ''],
     },
   }
