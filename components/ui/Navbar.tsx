@@ -50,6 +50,10 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
   })
   const [rotate, setRotate] = useState('rotate-90')
   const [mouseEnter, setMouseEnter] = useState(true)
+  const [popupView, setPopupView] = useState('hidden')
+  const [popupOpacity, setPopupOpacity] = useState('opacity-0')
+  const [popupMouse, setPopupMouse] = useState(false)
+  const [popupLoading, setPopupLoading] = useState(false)
 
   const { categories } = useCategories('/categories')
   const pathname = usePathname()
@@ -101,9 +105,46 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
       setRotate('rotate-90')
     }
   }
+  useEffect(() => {
+    if (design.popup.tag !== '') {
+      setTimeout(() => {
+        setPopupView('flex')
+        setTimeout(() => {
+          setPopupOpacity('opacity-1')
+        }, 50)
+      }, 10000)
+    }
+  }, [])
+
+  const popupSubmit = async () => {
+    setPopupLoading(true)
+    setPopupLoading(false)
+  }
 
   return (
     <>
+    <div onClick={() => {
+      if (!popupMouse) {
+        setPopupOpacity('opacity-0')
+        setTimeout(() => {
+          setPopupView('hidden')
+        }, 200)
+      }
+    }} className={`${popupView} ${popupOpacity} transition-opacity duration-200 w-full h-full z-50 fixed bg-black/30 flex`}>
+      <form onSubmit={popupSubmit} onMouseEnter={() => setPopupMouse(true)} onMouseLeave={() => setPopupMouse(false)} className='m-auto p-8 w-[600px] flex flex-col gap-4 bg-white rounded-md'>
+        <h4 className='text-xl font-medium tracking-widest'>{design.popup.title !== '' ? design.popup.title : 'SUSCRIBETE A NUESTRA LISTA'}</h4>
+        <p>{design.popup.description !== '' ? design.popup.description : 'Dejanos tu nombre y tu correo para enviarte correos exclusivos'}</p>
+        <div className='flex flex-col gap-2'>
+          <p className='text-sm'>Nombre</p>
+          <input type='text' placeholder='Nombre' className='font-light p-1.5 rounded border text-sm w-full focus:outline-none focus:border-main focus:ring-1 focus:ring-main dark:border-neutral-600' />
+        </div>
+        <div className='flex flex-col gap-2'>
+          <p className='text-sm'>Email</p>
+          <input type='text' placeholder='Email' className='font-light p-1.5 rounded border text-sm w-full focus:outline-none focus:border-main focus:ring-1 focus:ring-main dark:border-neutral-600' />
+        </div>
+        <button type='submit' className='bg-main text-white h-10'>Envíar</button>
+      </form>
+    </div>
     <div className={`fixed ${logoLoad ? 'hidden' : 'flex'} z-50 w-full h-full bg-white`} />
     <div className='w-full'>
       {

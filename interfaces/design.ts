@@ -47,6 +47,11 @@ export interface IDesign {
         metaTitle: string
         metaDescription: string
     }
+    popup: {
+        title: string
+        description: string
+        tag: string
+    }
 }
 
 export interface IBanner {

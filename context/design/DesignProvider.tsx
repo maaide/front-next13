@@ -56,6 +56,11 @@ const DesignProvider: React.FC<PropsWithChildren> = ({ children }) => {
     blog: {
       metaTitle: '',
       metaDescription: ''
+    },
+    popup: {
+      title: '',
+      description: '',
+      tag: ''
     }
   })
   const [load, setLoad] = useState(false)
