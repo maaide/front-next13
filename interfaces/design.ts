@@ -43,6 +43,10 @@ export interface IDesign {
         sectionProducts: string
         category?: string
     }
+    blog: {
+        metaTitle: string
+        metaDescription: string
+    }
 }
 
 export interface IBanner {
