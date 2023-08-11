@@ -52,6 +52,10 @@ const DesignProvider: React.FC<PropsWithChildren> = ({ children }) => {
     cart: {
       title: '',
       sectionProducts: ''
+    },
+    blog: {
+      metaTitle: '',
+      metaDescription: ''
     }
   })
   const [load, setLoad] = useState(false)
