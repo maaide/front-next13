@@ -114,7 +114,7 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
         }, 50)
       }, 10000)
     }
-  }, [])
+  }, [design])
 
   const popupSubmit = async () => {
     setPopupLoading(true)
