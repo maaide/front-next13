@@ -12,6 +12,7 @@ import { IStoreData } from '@/interfaces'
 import DesignContext from '@/context/design/DesignContext'
 import LogoContext from '@/context/logo/LogoContext'
 import AccountLogin from './Account'
+import { Spinner2 } from '.'
 
 interface Props {
   menu: any,
@@ -54,6 +55,7 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
   const [popupOpacity, setPopupOpacity] = useState('opacity-0')
   const [popupMouse, setPopupMouse] = useState(false)
   const [popupLoading, setPopupLoading] = useState(false)
+  const [popupInfo, setPopupInfo] = useState({ firstName: '', email: '' })
 
   const { categories } = useCategories('/categories')
   const pathname = usePathname()
@@ -118,6 +120,7 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
 
   const popupSubmit = async () => {
     setPopupLoading(true)
+    await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/clients`, { firstName: popupInfo.firstName, email: popupInfo.email, tag: design.popup.tag })
     setPopupLoading(false)
   }
 
@@ -136,13 +139,13 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
         <p>{design.popup.description !== '' ? design.popup.description : 'Dejanos tu nombre y tu correo para enviarte correos exclusivos'}</p>
         <div className='flex flex-col gap-2'>
           <p className='text-sm'>Nombre</p>
-          <input type='text' placeholder='Nombre' className='font-light p-1.5 rounded border text-sm w-full focus:outline-none focus:border-main focus:ring-1 focus:ring-main dark:border-neutral-600' />
+          <input type='text' placeholder='Nombre' onChange={(e: any) => setPopupInfo({ ...popupInfo, firstName: e.target.value })} value={popupInfo.firstName} className='font-light p-1.5 rounded border text-sm w-full focus:outline-none focus:border-main focus:ring-1 focus:ring-main dark:border-neutral-600' />
         </div>
         <div className='flex flex-col gap-2'>
           <p className='text-sm'>Email</p>
-          <input type='text' placeholder='Email' className='font-light p-1.5 rounded border text-sm w-full focus:outline-none focus:border-main focus:ring-1 focus:ring-main dark:border-neutral-600' />
+          <input type='text' placeholder='Email' onChange={(e: any) => setPopupInfo({ ...popupInfo, email: e.target.value })} value={popupInfo.email} className='font-light p-1.5 rounded border text-sm w-full focus:outline-none focus:border-main focus:ring-1 focus:ring-main dark:border-neutral-600' />
         </div>
-        <button type='submit' className='bg-main text-white h-10'>Envíar</button>
+        <button type='submit' className='bg-main text-white h-10'>{popupLoading ? <Spinner2 /> : 'Envíar'}</button>
       </form>
     </div>
     <div className={`fixed ${logoLoad ? 'hidden' : 'flex'} z-50 w-full h-full bg-white`} />
