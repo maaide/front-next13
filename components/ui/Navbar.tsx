@@ -108,7 +108,7 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
     }
   }
   useEffect(() => {
-    if (design.popup.tag !== '') {
+    if (design.popup.tag !== '' && !(localStorage.getItem('popup') === 'true')) {
       setTimeout(() => {
         setPopupView('flex')
         setTimeout(() => {
@@ -120,7 +120,8 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
 
   const popupSubmit = async () => {
     setPopupLoading(true)
-    await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/clients`, { firstName: popupInfo.firstName, email: popupInfo.email, tag: [design.popup.tag] })
+    await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/clients`, { firstName: popupInfo.firstName, email: popupInfo.email, tags: [design.popup.tag] })
+    localStorage.setItem('popup', 'true')
     setPopupLoading(false)
   }
 
