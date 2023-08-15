@@ -120,7 +120,7 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
 
   const popupSubmit = async () => {
     setPopupLoading(true)
-    await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/clients`, { firstName: popupInfo.firstName, email: popupInfo.email, tag: design.popup.tag })
+    await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/clients`, { firstName: popupInfo.firstName, email: popupInfo.email, tag: [design.popup.tag] })
     setPopupLoading(false)
   }
 
