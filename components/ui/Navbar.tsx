@@ -118,7 +118,8 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
     }
   }, [design])
 
-  const popupSubmit = async () => {
+  const popupSubmit = async (e: any) => {
+    e.preventDefault()
     setPopupLoading(true)
     await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/clients`, { firstName: popupInfo.firstName, email: popupInfo.email, tags: [design.popup.tag] })
     localStorage.setItem('popup', 'true')
