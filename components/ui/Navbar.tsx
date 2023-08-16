@@ -124,6 +124,10 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
     await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/clients`, { firstName: popupInfo.firstName, email: popupInfo.email, tags: [design.popup.tag] })
     localStorage.setItem('popup', 'true')
     setPopupLoading(false)
+    setPopupOpacity('opacity-0')
+    setTimeout(() => {
+      setPopupView('hidden')
+    }, 200)
   }
 
   return (
