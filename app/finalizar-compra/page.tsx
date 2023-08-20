@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import { Shipping } from '../../components/products'
 import { Button2 } from '../../components/ui'
-import { ICartProduct, IClient, IQuantityOffer, ISell, IShipping, IStoreData, Region } from '../../interfaces'
+import { ICartProduct, IClient, IProduct, IQuantityOffer, ISell, IShipping, IStoreData, Region } from '../../interfaces'
 import { NumberFormat } from '../../utils'
 import Link from 'next/link'
 import Head from 'next/head'
@@ -12,6 +12,7 @@ import { Spinner2 } from '../../components/ui'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
+import { initMercadoPago, Wallet } from '@mercadopago/sdk-react'
 
 const CheckOut = () => {
 
@@ -52,12 +53,15 @@ const CheckOut = () => {
   const [shippingOpacity, setShippingOpacity] = useState('opacity-0')
   const [shippingMouse, setShippingMouse] = useState(false)
   const [clientId, setClientId] = useState('')
+  const [link, setLink] = useState('')
 
   const { data: session, status } = useSession()
 
   const user = session?.user as { firstName: string, lastName: string, email: string, _id: string }
 
   const router = useRouter()
+
+  initMercadoPago(process.env.MERCADOPAGO_PUBLIC_KEY!)
 
   const getClientData = async () => {
     if (status === 'authenticated') {
@@ -154,6 +158,14 @@ const CheckOut = () => {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/pay/create`, pago)
       setToken(response.data.token)
       setUrl(response.data.url)
+    } else if (e.target.name === 'pay' && e.target.value === 'MercadoPago') {
+      let products: any[] = []
+      sell.cart.map(product => {
+        products = products.concat({ title: product.name, unit_price: product.price, quantity: product.quantity })
+      })
+      products = products.concat({ title: 'Envío', unit_price: Number(sell.shipping), quantity: 1 })
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/mercado-pago-create`, products)
+      setLink(res.data.init_point)
     }
   }
 
@@ -245,6 +257,39 @@ const CheckOut = () => {
       Cookies.set('region', sell.region)
     }
     router.push('/gracias-por-comprar')
+    setSubmitLoading(false)
+  }
+
+  const mercadoSubmit = async (e: any) => {
+    e.preventDefault()
+    setSubmitLoading(true)
+    const { data } = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/sells`, sell)
+    if (clientId !== '') {
+      await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/clients/${clientId}`, sell)
+    }
+    localStorage.setItem('sell', JSON.stringify(data))
+    sell.cart.map(async (product) => {
+      if (product.variation) {
+        await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/product/${product._id}`, { stock: product.quantity, variation: product.variation })
+      } else {
+        await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/product/${product._id}`, { stock: product.quantity })
+      }
+    })
+    if (saveData) {
+      Cookies.set('firstName', sell.firstName)
+      Cookies.set('lastName', sell.lastName)
+      Cookies.set('email', sell.email)
+      if (sell.phone) {
+        Cookies.set('phone', sell.phone.toString())
+      }
+      Cookies.set('address', sell.address)
+      if (sell.details) {
+        Cookies.set('details', sell.details)
+      }
+      Cookies.set('city', sell.city)
+      Cookies.set('region', sell.region)
+    }
+    window.location.href = link
     setSubmitLoading(false)
   }
 
@@ -347,7 +392,7 @@ const CheckOut = () => {
                       </div>
                     </div>
                     <div className='flex gap-2 mt-auto mb-auto'>
-                      <span className='font-medium'>${NumberFormat(product.quantityOffers ? offer(product) : product.price * product.quantity)}</span>
+                      <span className='font-medium'>${NumberFormat(product.quantityOffers?.length ? offer(product) : product.price * product.quantity)}</span>
                       {
                         product.beforePrice
                           ? <span className='text-sm line-through'>${NumberFormat(product.beforePrice * product.quantity)}</span>
@@ -369,7 +414,7 @@ const CheckOut = () => {
           <div className='mt-2 mb-2 pb-2 border-b dark:border-neutral-700'>
             <div className='flex gap-2 justify-between mb-1'>
               <span className='text-[14px]'>Subtotal</span>
-              <span className='text-[14px]'>${NumberFormat(sell.cart.reduce((bef, curr) => curr.quantityOffers ? offer(curr) : bef + curr.price * curr.quantity, 0))}</span>
+              <span className='text-[14px]'>${NumberFormat(sell.cart.reduce((bef, curr) => curr.quantityOffers?.length ? offer(curr) : bef + curr.price * curr.quantity, 0))}</span>
             </div>
             <div className='flex gap-2 justify-between'>
               <span className='text-[14px]'>Envío</span>
@@ -379,7 +424,7 @@ const CheckOut = () => {
         </div>
         <div className='flex gap-2 justify-between'>
           <span className='font-medium'>Total</span>
-          <span className='font-medium'>${NumberFormat(sell.cart.reduce((bef, curr) => curr.quantityOffers ? offer(curr) : bef + curr.price * curr.quantity, 0) + Number(sell.shipping))}</span>
+          <span className='font-medium'>${NumberFormat(sell.cart.reduce((bef, curr) => curr.quantityOffers?.length ? offer(curr) : bef + curr.price * curr.quantity, 0) + Number(sell.shipping))}</span>
         </div>
       </div>
       <div className='mt-28 flex p-4 1010:mt-0'>
@@ -504,6 +549,10 @@ const CheckOut = () => {
                       <input type='radio' name='pay' value='WebPay Plus' onChange={inputChange} />
                       <p className='text-sm'>WebPay Plus</p>
                     </div>
+                    <div className='flex gap-2 p-3 border rounded-md mb-1 dark:border-neutral-700'>
+                      <input type='radio' name='pay' value='MercadoPago' onChange={inputChange} />
+                      <p className='text-sm'>MercadoPago</p>
+                    </div>
                   </div>
                 )
                 : ''
@@ -531,9 +580,13 @@ const CheckOut = () => {
                         <button onClick={transbankSubmit} className='w-24 h-9 rounded-md bg-button text-white cursor-pointer'>{submitLoading ? <Spinner2 /> : 'Pagar'}</button>
                       </form>
                     )
-                    : sell.pay === 'Pago en la entrega'
-                      ? <button onClick={handleSubmit} className='w-24 h-9 rounded-md bg-button text-white'>{submitLoading ? <Spinner2 /> : 'Pagar'}</button>
-                      : <button onClick={(e: any) => e.preventDefault()} className='w-24 h-9 rounded-md bg-button/50 text-white cursor-not-allowed'>{submitLoading ? <Spinner2 /> : 'Pagar'}</button>
+                    : sell.pay === 'MercadoPago'
+                      ? link !== ''
+                        ? <button onClick={mercadoSubmit} className='w-24 h-9 rounded-md bg-button text-white'>{submitLoading ? <Spinner2 /> : 'Pagar'}</button>
+                        : <button onClick={(e: any) => e.preventDefault()} className='w-24 h-9 rounded-md bg-button/50 text-white cursor-not-allowed'>{submitLoading ? <Spinner2 /> : 'Pagar'}</button>
+                      : sell.pay === 'Pago en la entrega'
+                        ? <button onClick={handleSubmit} className='w-24 h-9 rounded-md bg-button text-white'>{submitLoading ? <Spinner2 /> : 'Pagar'}</button>
+                        : <button onClick={(e: any) => e.preventDefault()} className='w-24 h-9 rounded-md bg-button/50 text-white cursor-not-allowed'>{submitLoading ? <Spinner2 /> : 'Pagar'}</button>
               }
             </div>
           </div>
@@ -557,7 +610,7 @@ const CheckOut = () => {
                         </div>
                       </div>
                       <div className='flex gap-2 mt-auto mb-auto'>
-                        <span className='font-medium'>${NumberFormat(product.quantityOffers ? offer(product) : product.price * product.quantity)}</span>
+                        <span className='font-medium'>${NumberFormat(product.quantityOffers?.length ? offer(product) : product.price * product.quantity)}</span>
                         {
                           product.beforePrice
                             ? <span className='text-sm line-through'>${NumberFormat(product.beforePrice * product.quantity)}</span>
@@ -579,7 +632,7 @@ const CheckOut = () => {
             <div className='mb-2 pb-2 border-b dark:border-neutral-700'>
               <div className='flex gap-2 justify-between mb-1'>
                 <span className='text-[14px]'>Subtotal</span>
-                <span className='text-[14px]'>${NumberFormat(sell.cart.reduce((bef, curr) => curr.quantityOffers ? offer(curr) : bef + curr.price * curr.quantity, 0))}</span>
+                <span className='text-[14px]'>${NumberFormat(sell.cart.reduce((bef, curr) => curr.quantityOffers?.length ? offer(curr) : bef + curr.price * curr.quantity, 0))}</span>
               </div>
               <div className='flex gap-2 justify-between'>
                 <span className='text-[14px]'>Envío</span>
@@ -588,7 +641,7 @@ const CheckOut = () => {
             </div>
             <div className='flex gap-2 justify-between'>
               <span className='font-medium'>Total</span>
-              <span className='font-medium'>${NumberFormat(sell.cart.reduce((bef, curr) => curr.quantityOffers ? offer(curr) : bef + curr.price * curr.quantity, 0) + Number(sell.shipping))}</span>
+              <span className='font-medium'>${NumberFormat(sell.cart.reduce((bef, curr) => curr.quantityOffers?.length ? offer(curr) : bef + curr.price * curr.quantity, 0) + Number(sell.shipping))}</span>
             </div>
           </div>
         </form>

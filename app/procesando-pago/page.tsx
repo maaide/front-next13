@@ -11,6 +11,7 @@ export default function PayProcess () {
   const verifyPay = async () => {
     const urlParams = new URLSearchParams(window.location.search)
     const tokenWs = urlParams.get('token_ws')
+    const status = urlParams.get('collection_status')
     if (tokenWs) {
       const sell = JSON.parse(localStorage.getItem('sell')!)
       const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/pay/commit`, { token: tokenWs, sell: sell })
@@ -21,6 +22,15 @@ export default function PayProcess () {
       if (response.data.status === 'AUTHORIZED') {
         await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/sell/${sell._id}`, { state: 'Pago realizado' })
         router.push('/gracias-por-comprar')
+      }
+    } else if (status) {
+      const sell = JSON.parse(localStorage.getItem('sell')!)
+      if (status === 'approved') {
+        await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/sell/${sell._id}`, { state: 'Pago realizado' })
+        router.push('/gracias-por-comprar')
+      } else {
+        await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/sell/${sell._id}`, { state: 'Pago no realizado' })
+        router.push('/pago-fallido')
       }
     }
   }
