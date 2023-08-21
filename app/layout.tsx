@@ -9,6 +9,7 @@ import DesignProvider from '@/context/design/DesignProvider'
 import CartProvider from '@/context/cart/CartProvider'
 import { MainLayout } from '@/components/layouts'
 import { SWRProvider } from './swr-provider'
+import Script from 'next/script'
 
 const poppins = Poppins({
   weight: ['300', '400', '500', '600'],
@@ -37,6 +38,16 @@ export default function RootLayout({
                 <LogoProvider>
                   <CartProvider>
                     <MainLayout>
+                      <Script src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`} />
+                      <Script id="google-analytics">
+                        {`
+                          window.dataLayer = window.dataLayer || [];
+                          function gtag(){dataLayer.push(arguments);}
+                          gtag('js', new Date());
+                
+                          gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}');
+                        `}
+                      </Script>
                       <style jsx global>{`
                         p, span, button, a, input, textarea, select {
                           font-family: ${poppins.style.fontFamily};
