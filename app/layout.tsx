@@ -10,6 +10,7 @@ import CartProvider from '@/context/cart/CartProvider'
 import { MainLayout } from '@/components/layouts'
 import { SWRProvider } from './swr-provider'
 import Script from 'next/script'
+import { Chat } from '@/components/chat'
 
 const poppins = Poppins({
   weight: ['300', '400', '500', '600'],
@@ -57,6 +58,7 @@ export default function RootLayout({
                         }
                       `}</style>
                       {children}
+                      <Chat />
                     </MainLayout>
                   </CartProvider>
                 </LogoProvider>
