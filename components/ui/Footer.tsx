@@ -49,7 +49,7 @@ export const Footer = () => {
             {
               storeData.logoWhite.url
                 ? <Image className='w-36 h-auto mb-3' src={storeData.logoWhite.url} alt='Logo' width={144} height={50.39} />
-                : ''
+                : <Link href='/' className='text-white text-3xl font-medium'>TIENDA</Link>
             }
             {
               storeData.email
@@ -74,7 +74,7 @@ export const Footer = () => {
               }
             </div>
           </div>
-          <div className='mt-6'>
+          <div>
             <h3 className='text-white mb-2'>TIENDA</h3>
             <Link className='block text-white text-sm mb-1' href='/tienda'>Productos</Link>
             {
@@ -85,14 +85,14 @@ export const Footer = () => {
                 : ''
             }
           </div>
-          <div className='mt-6'>
+          <div>
             <h3 className='text-white mb-2'>POLITICAS</h3>
             <Link className='block text-white text-sm mb-1' href='/politicas-privacidad'>Politicas de privacidad</Link>
             <Link className='block text-white text-sm mb-1' href='/terminos-y-condiciones'>Politicas de devoluciones y reembolsos</Link>
             <Link className='block text-white text-sm mb-1' href='/envio'>Politicas de envío</Link>
           </div>
         </div>
-        <div className='mt-6'>
+        <div>
           <span className='text-white text-sm'>© 2023 {storeData.name}. Todos los derechos reservados</span>
         </div>
       </div>

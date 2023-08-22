@@ -167,8 +167,9 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
             : ''
           : ''
       }
-      <div style={{ top: '-0.5px' }} className='sticky border-b flex px-2 bg-white w-full z-30 dark:bg-neutral-900 dark:border-neutral-800'>
-        <div className='m-auto w-1280 flex justify-between z-40 py-1 575:py-0'>
+      <div style={{ top: '-0.5px' }} className='sticky border-b flex bg-white w-full z-30 dark:bg-neutral-900 dark:border-neutral-800'>
+        <div className='m-auto w-full flex justify-between px-2 z-40 575:py-0'>
+          <div className='m-auto w-[1280px] flex justify-between z-40 py-1 575:py-0'>
           <div className='hidden gap-2 575:flex'>
             {
               !mounted
@@ -422,6 +423,7 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
                 <Link href='/tienda' className='mt-auto mb-auto text-sm text-neutral-500'>Continuar comprando</Link>
               </div>
           }
+          </div>
         </div>
         <div className={`${accountView} transition-opacity duration-200 w-full z-50 absolute top-[51px] 575:hidden`} style={{ height: 'calc(100vh - 91px)' }}>
           <div className='w-1440 ml-auto mr-auto'>
@@ -450,7 +452,7 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
             </div>
           </div>
         </div>
-        <div className={`${cartView} transition-opacity duration-200 z-50 absolute top-[51px] 575:hidden`} style={{ height: 'calc(100vh - 91px)', width: 'calc(100% - 8px)' }}>
+        <div className={`${cartView} transition-opacity duration-200 w-full z-50 absolute top-[51px] 575:hidden`} style={{ height: 'calc(100vh - 91px)' }}>
           <div className='w-1440 ml-auto mr-auto'>
             <div className='ml-auto h-fit flex w-full 400:w-96'>
               <NavbarCart setCartView={setCartView} cartOpacity={cartOpacity} setCartOpacity={setCartOpacity} />
@@ -470,7 +472,7 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
               setCartView('hidden')
             }, 200)
           }
-        }} className={`hidden z-50 absolute top-[53px] 575:${cartView}`} style={{ height: 'calc(100vh - 91px)', width: 'calc(100% - 8px)' }}>
+        }} className={`hidden z-50 absolute top-[53px] w-full 575:${cartView}`} style={{ height: 'calc(100vh - 91px)' }}>
           <div className='w-1440 ml-auto mr-auto'>
             <div className='ml-auto h-fit flex w-full 400:w-96'>
               <NavbarCart setCartView={setCartView} setCartPc={setCartPc} cartOpacity={cartOpacity} setCartOpacity={setCartOpacity} />
@@ -494,8 +496,18 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
                   setTimeout(() => {
                     setIndex('hidden')
                   }, 150)
-                }} className='tracking-widest font-montserrat font-medium text-[#1c1b1b] dark:text-white' href='/tienda'>TIENDA</Link>
-                <button onClick={showCategories}><svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 1024 1024" className={`${rotate} transition-all duration-150 ml-auto text-lg w-4 text-neutral-500`} xmlns="http://www.w3.org/2000/svg"><path d="M765.7 486.8L314.9 134.7A7.97 7.97 0 0 0 302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 0 0 0-50.4z"></path></svg></button>
+                }} className='tracking-widest font-montserrat font-medium text-[#1c1b1b] w-full dark:text-white' href='/tienda'>TIENDA</Link>
+                {
+                  categories.length
+                    ? <button onClick={showCategories}><svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 1024 1024" className={`${rotate} transition-all duration-150 ml-auto text-lg w-4 text-neutral-500`} xmlns="http://www.w3.org/2000/svg"><path d="M765.7 486.8L314.9 134.7A7.97 7.97 0 0 0 302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 0 0 0-50.4z"></path></svg></button>
+                    : <Link href='/tienda' onClick={() => {
+                      setMenu('w-0 pl-0 pr-0 pt-6 pb-6')
+                      setMenuButtons('opacity-0')
+                      setTimeout(() => {
+                        setIndex('hidden')
+                      }, 150)
+                    }}><svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 1024 1024" className="ml-auto w-4 text-lg text-neutral-500" xmlns="http://www.w3.org/2000/svg"><path d="M765.7 486.8L314.9 134.7A7.97 7.97 0 0 0 302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 0 0 0-50.4z"></path></svg></Link>
+                }
               </div>
               <div className={`${categoriesPhone} flex flex-col gap-2 mb-4`}>
                 {
