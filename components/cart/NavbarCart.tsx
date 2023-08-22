@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import React, { useContext } from 'react'
 import { ICartProduct, IQuantityOffer } from '../../interfaces'
-import { NumberFormat } from '../../utils'
+import { NumberFormat, offer } from '../../utils'
 import CartContext from '../../context/cart/CartContext'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
@@ -21,20 +21,6 @@ export const NavbarCart: React.FC<Props> = ({ setCartView, setCartPc, cartOpacit
   const { data: session, status } = useSession()
 
   const user = session?.user as { firstName: string, lastName: string, email: string, _id: string, cart: ICartProduct[] }
-
-  const offer = (product: ICartProduct) => {
-    let offerPrice: IQuantityOffer = {descount: 0, quantity: 0}
-    if (product.quantityOffers && product.quantity > 1) {
-      const filter = product.quantityOffers.filter(offer => offer.quantity <= product.quantity)
-      if (filter.length > 1) {
-        offerPrice = filter.reduce((prev, current) => (prev.quantity > current.quantity) ? prev : current)
-      } else {
-        offerPrice = filter[0]
-      }
-    }
-    const finalPrice = offerPrice !== undefined ? Math.floor((product.price * product.quantity) / 100) * (100 - offerPrice.descount) : product.price * product.quantity
-    return finalPrice
-  }
 
   return (
     <div onMouseEnter={() => setCartPc(false)} onMouseLeave={() => setCartPc(true)} className={`ml-auto ${cartOpacity} transition-opacity duration-200 p-4 rounded-md shadow-md bg-white z-40 w-full dark:bg-neutral-900 dark:border dark:border-neutral-800 400:w-96`}>

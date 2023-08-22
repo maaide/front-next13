@@ -7,7 +7,7 @@ import { ProductList, ShippingCart } from '../../components/products'
 import { Spinner } from '../../components/ui'
 import { useProducts } from '../../hooks'
 import { ICartProduct, IProduct, IQuantityOffer } from '../../interfaces'
-import { NumberFormat } from '../../utils'
+import { NumberFormat, offer } from '../../utils'
 import Image from 'next/image'
 import DesignContext from '@/context/design/DesignContext'
 import { useSession } from 'next-auth/react'
@@ -38,20 +38,6 @@ const CartPage = () => {
   }, [])
 
   const { products, isLoadingProducts } = useProducts('/products')
-
-  const offer = (product: ICartProduct) => {
-    let offerPrice: IQuantityOffer = {descount: 0, quantity: 0}
-    if (product.quantityOffers && product.quantity > 1) {
-      const filter = product.quantityOffers.filter(offer => offer.quantity <= product.quantity)
-      if (filter.length > 1) {
-        offerPrice = filter.reduce((prev, current) => (prev.quantity > current.quantity) ? prev : current)
-      } else {
-        offerPrice = filter[0]
-      }
-    }
-    const finalPrice = offerPrice !== undefined ? Math.floor((product.price * product.quantity) / 100) * (100 - offerPrice.descount) : product.price * product.quantity
-    return finalPrice
-  }
 
   const filterProducts = () => {
     if (products.length) {

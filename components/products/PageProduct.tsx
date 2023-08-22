@@ -332,7 +332,7 @@ export default function PageProduct ({ product }: { product: IProduct }) {
               </div>
             </div>
           )
-          : productsFiltered.length
+          : productsFiltered.length > 1
             ? <RecomendedProducts products={ productsFiltered } title={design.product.title !== '' ? design.product.title : 'PRODUCTOS RECOMENDADOS'} productSelect={product} />
             : ''
       }

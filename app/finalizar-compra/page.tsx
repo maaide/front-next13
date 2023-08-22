@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from 'react'
 import { Shipping } from '../../components/products'
 import { Button2 } from '../../components/ui'
-import { ICartProduct, IClient, IProduct, IQuantityOffer, ISell, IShipping, IStoreData, Region } from '../../interfaces'
-import { NumberFormat } from '../../utils'
+import { ICartProduct, IClient, IQuantityOffer, ISell, IShipping, IStoreData, Region } from '../../interfaces'
+import { NumberFormat, offer } from '../../utils'
 import Link from 'next/link'
 import Head from 'next/head'
 import Cookies from 'js-cookie'
@@ -12,7 +12,7 @@ import { Spinner2 } from '../../components/ui'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
-import { initMercadoPago, Wallet } from '@mercadopago/sdk-react'
+import { initMercadoPago } from '@mercadopago/sdk-react'
 
 const CheckOut = () => {
 
@@ -167,20 +167,6 @@ const CheckOut = () => {
       const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/mercado-pago-create`, products)
       setLink(res.data.init_point)
     }
-  }
-
-  const offer = (product: ICartProduct) => {
-    let offerPrice: IQuantityOffer = {descount: 0, quantity: 0}
-    if (product.quantityOffers && product.quantity > 1) {
-      const filter = product.quantityOffers.filter(offer => offer.quantity <= product.quantity)
-      if (filter.length > 1) {
-        offerPrice = filter.reduce((prev, current) => (prev.quantity > current.quantity) ? prev : current)
-      } else {
-        offerPrice = filter[0]
-      }
-    }
-    const finalPrice = offerPrice !== undefined ? Math.floor((product.price * product.quantity) / 100) * (100 - offerPrice.descount) : product.price * product.quantity
-    return finalPrice
   }
 
   const payChange = (e: any) => {
