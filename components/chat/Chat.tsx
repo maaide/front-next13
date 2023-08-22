@@ -164,7 +164,7 @@ export const Chat = () => {
               </svg>
             )
             : (
-              <svg className="m-auto w-[17px]" role="presentation" viewBox="0 0 16 14">
+              <svg className="m-auto w-[19px] text-white" role="presentation" viewBox="0 0 16 14">
                 <path d="M15 0L1 14m14 0L1 0" stroke="currentColor" fill="none" fill-rule="evenodd"></path>
               </svg>
             )
