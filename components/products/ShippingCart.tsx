@@ -18,7 +18,7 @@ export const ShippingCart: React.FC<Props> = ({ setShippingCost }) => {
     const request = await axios.get('https://testservices.wschilexpress.com/georeference/api/v1.0/regions', {
       headers: {
         'Cache-Control': 'no-cache',
-        'Ocp-Apim-Subscription-Key': '4ebbe4e737b54bfe94307bca9e36ac4d'
+        'Ocp-Apim-Subscription-Key': process.env.CHILEXPRESS_COBERTURA
       }
     })
     setRegions(request.data.regions)
@@ -33,7 +33,7 @@ export const ShippingCart: React.FC<Props> = ({ setShippingCost }) => {
     const request = await axios.get(`https://testservices.wschilexpress.com/georeference/api/v1.0/coverage-areas?RegionCode=${region?.regionId}&type=0`, {
       headers: {
         'Cache-Control': 'no-cache',
-        'Ocp-Apim-Subscription-Key': '4ebbe4e737b54bfe94307bca9e36ac4d'
+        'Ocp-Apim-Subscription-Key': process.env.CHILEXPRESS_COBERTURA
       }
     })
     setCitys(request.data.coverageAreas)
@@ -58,7 +58,7 @@ export const ShippingCart: React.FC<Props> = ({ setShippingCost }) => {
       headers: {
         'Content-Type': 'application/json',
         'Cache-Control': 'no-cache',
-        'Ocp-Apim-Subscription-Key': '512b6b0ff709426d82968a33be83b4a1'
+        'Ocp-Apim-Subscription-Key': process.env.CHILEXPRESS_COTIZADOR
       }
     })
     setShipping(request.data.data.courierServiceOptions)
