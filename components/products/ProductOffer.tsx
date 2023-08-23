@@ -12,13 +12,13 @@ export const ProductOffer: React.FC<Props> = ({ offer }) => {
 
   const [tempCartProduct, setTempCartProduct] = useState<ICartProduct>({
     name: offer.productsSale[0].name,
-    image: offer.productsSale[0].image,
+    image: offer.productsSale[0].images[0].url,
     price: offer.price,
     beforePrice: offer.productsSale[0].beforePrice,
     slug: offer.productsSale[0].slug,
-    variation: offer.productsSale[0].variations?.length ? offer.productsSale[0].variations[0] : undefined,
+    variation: offer.productsSale[0].variations?.variations.length ? offer.productsSale[0].variations.variations[0] : undefined,
     quantity: 1,
-    category: { category: offer.productsSale[0].category, slug: '' }
+    category: { category: offer.productsSale[0].category.category, slug: offer.productsSale[0].category.slug }
   })
 
   const productChange = (e: any) => {
@@ -26,10 +26,10 @@ export const ProductOffer: React.FC<Props> = ({ offer }) => {
       if (product.name === e.target.value) {
         setTempCartProduct({...tempCartProduct,
           name: product.name,
-          image: product.image,
+          image: product.images[0].url,
           beforePrice: product.beforePrice,
           slug: product.slug,
-          variation: product.variations?.length ? product.variations[0] : undefined
+          variation: product.variations?.variations.length ? product.variations.variations[0] : undefined
         })
       }
     })
@@ -37,18 +37,18 @@ export const ProductOffer: React.FC<Props> = ({ offer }) => {
 
   const variationChange = (e: any) => {
     const product = offer.productsSale.find(product => product.name === e.target.name)
-    const variation = product?.variations?.find(variation => variation.variation === e.target.value)
+    const variation = product?.variations?.variations.find(variation => variation.variation === e.target.value)
     setTempCartProduct({...tempCartProduct,
       variation: variation
     })
   }
 
   return (
-    <div className='flex mb-2'>
+    <div className='flex'>
       {
         tempCartProduct.variation
-          ? <Image className='w-24 h-24 mr-1 mt-auto mb-auto mobile2:w-28 mobile2:h-28 mobile:w-32 mobile:mr-2 mobile:h-32' src={tempCartProduct.variation.image!.url} alt={`Producto ${tempCartProduct.name}`} width={96} height={96} />
-          : <Image className='w-24 h-24 mr-1 mt-auto mb-auto mobile2:w-28 mobile2:h-28 mobile:w-32 mobile:mr-2 mobile:h-32' src={tempCartProduct.image} alt={`Producto ${tempCartProduct.name}`} width={96} height={96} />
+          ? <Image className='w-24 h-24 mr-1 mt-auto mb-auto mobile2:w-28 mobile2:h-28 mobile:w-32 mobile:mr-2 mobile:h-32' src={tempCartProduct.variation.image!.url} alt={`Producto ${tempCartProduct.name}`} width={100} height={100} />
+          : <Image className='w-24 h-24 mr-1 mt-auto mb-auto mobile2:w-28 mobile2:h-28 mobile:w-32 mobile:mr-2 mobile:h-32' src={tempCartProduct.image} alt={`Producto ${tempCartProduct.name}`} width={100} height={100} />
       }
       <div className='mt-auto mb-auto'>
         {
@@ -61,8 +61,12 @@ export const ProductOffer: React.FC<Props> = ({ offer }) => {
             </select>
         }
         <div className='flex gap-2'>
-          <span className='text-main dark:text-white'>${NumberFormat(tempCartProduct.price)}</span>
-          <span className='text-sm line-through text-[#444444] dark:text-neutral-400'>${NumberFormat(tempCartProduct.beforePrice!)}</span>
+          <span className='text-main dark:text-white'>${NumberFormat(Number(tempCartProduct.price))}</span>
+          {
+            tempCartProduct.beforePrice
+              ? <span className='text-sm line-through text-[#444444] dark:text-neutral-400'>${NumberFormat(Number(tempCartProduct.beforePrice!))}</span>
+              : <span className='text-sm line-through text-[#444444] dark:text-neutral-400'>${NumberFormat(Number(tempCartProduct.price!))}</span>
+          }
         </div>
         {
           tempCartProduct.variation !== undefined
@@ -70,7 +74,7 @@ export const ProductOffer: React.FC<Props> = ({ offer }) => {
               {
                 offer.productsSale.map(product => {
                   if (tempCartProduct.name === product.name) {
-                    return product.variations?.map(variation => <option key={variation.variation}>{variation.variation}</option>)
+                    return product.variations?.variations?.map(variation => <option key={variation.variation}>{variation.variation}</option>)
                   }
                   return null
                 })
