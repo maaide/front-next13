@@ -7,17 +7,15 @@ export const revalidate = 60
 
 async function fetchProduct (product: string) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${product}`)
-  return res.json()
-}
-
-async function viewContent (product: IProduct) {
+  const prod: any = res.json()
   await fetch(`${process.env.NEXT_PUBLIC_API_URL}/view-content`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ name: product.name, price: product.price, category: product.category.category, url: product.slug, fbp: Cookies.get('_fbp'), fbc: Cookies.get('_fbc') })
+    body: JSON.stringify({ name: prod.name, price: prod.price, category: prod.category.category, url: prod.slug, fbp: Cookies.get('_fbp'), fbc: Cookies.get('_fbc') })
   })
+  return prod
 }
  
 export async function generateMetadata({
@@ -42,8 +40,6 @@ export async function generateMetadata({
 
 export default async function ({ params }: { params: { product: string } }) {
   const product: IProduct = await fetchProduct(params.product)
-
-  await viewContent(product)
 
   return (
     <PageProduct product={product} />
