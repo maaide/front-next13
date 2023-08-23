@@ -13,7 +13,7 @@ async function fetchProduct (product: string) {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ name: prod.name, price: prod.price, category: prod.category.category, url: prod.slug, fbp: Cookies.get('_fbp'), fbc: Cookies.get('_fbc') })
+    body: JSON.stringify({ name: prod.name, price: prod.price, url: prod.slug, fbp: Cookies.get('_fbp'), fbc: Cookies.get('_fbc') })
   })
   return prod
 }
