@@ -19,6 +19,7 @@ export interface IProduct {
   titleSeo?: string
   descriptionSeo?: string
   quantityOffers?: IQuantityOffer[]
+  sku?: string
 
   createdAt: string
   updatedAt: string

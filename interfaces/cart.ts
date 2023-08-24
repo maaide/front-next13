@@ -13,4 +13,5 @@ export interface ICartProduct {
   stock?: number
   category: { category: string, slug: string }
   quantityOffers?: IQuantityOffer[]
+  sku?: string
 }
