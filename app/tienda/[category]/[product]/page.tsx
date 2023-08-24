@@ -47,6 +47,7 @@ export default async function ({ params }: { params: { product: string } }) {
       <PageProduct product={product} />
       <Script
         id="fb-pixel"
+        strategy="afterInteractive"
         dangerouslySetInnerHTML={{
         __html: `
         fbq('track', 'ViewContent', { content_name: ${product.name}, content_category: ${product.category.category}, currency: "CLP", value: ${product.price} });
