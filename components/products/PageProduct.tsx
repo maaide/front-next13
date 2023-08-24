@@ -83,7 +83,7 @@ export default function PageProduct ({ product }: { product: IProduct }) {
 
   return (
     <>
-      <Script>
+      <Script id="view_content_pixel">
         {`
           fbq('track', 'ViewContent', {content_name: ${product.name}, content_category: ${product.category.category}, currency: "CLP", value: ${product.price}})
         `}
