@@ -98,7 +98,7 @@ export default function PageProduct ({ product }: { product: IProduct }) {
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{
         __html: `
-        fbq('track', 'ViewContent', {content_name: "${product.name}", content_category: "${product.category.category}", currency: "CLP", value: ${product.price}, contents: [${product}], content_ids: ${product.sku && product.sku !== '' ? `['${product.sku}']` : `['${product._id}']`}});
+        fbq('track', 'ViewContent', {content_name: "${product.name}", content_category: "${product.category.category}", currency: "clp", value: ${product.price}, content_ids: ['${product._id}']});
         `,
         }}
       />
