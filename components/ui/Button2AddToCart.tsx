@@ -54,8 +54,8 @@ export const Button2AddToCart: React.FC<Props> = ({ tempCartProduct }) => {
         offerPrice = filter[0]
       }
     }
-    fbq('track', 'AddToCart', {content_name: tempCartProduct.name, content_type: tempCartProduct.category.category, currency: "CLP", value: tempCartProduct.price * tempCartProduct.quantity, content_ids: tempCartProduct.sku && tempCartProduct.sku !== '' ? `['${tempCartProduct.sku}']` : `['${tempCartProduct._id}']`, contents: [tempCartProduct]})
-    await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/add-cart`, { name: tempCartProduct.name, price: offerPrice !== undefined ? Math.floor((tempCartProduct.price * tempCartProduct.quantity) / 100) * (100 - offerPrice.descount) : tempCartProduct.price * tempCartProduct.quantity, quantity: tempCartProduct.quantity, category: tempCartProduct.category.category, fbp: Cookies.get('_fbp'), fbc: Cookies.get('_fbc') })
+    fbq('track', 'AddToCart', {content_name: tempCartProduct.name, content_type: tempCartProduct.category.category, currency: "clp", value: tempCartProduct.price * tempCartProduct.quantity, content_ids: `['${tempCartProduct._id}']`, contents: [{id: tempCartProduct._id, category: tempCartProduct.category.category, quantity: tempCartProduct.quantity, item_price: tempCartProduct.price}]})
+    await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/add-cart`, { product: tempCartProduct, fbp: Cookies.get('_fbp'), fbc: Cookies.get('_fbc') })
     if (status === 'authenticated') {
       const cartLocal = JSON.parse(localStorage.getItem('cart')!)
       await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/account/${user._id}`, { cart: cartLocal })
