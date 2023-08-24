@@ -84,11 +84,11 @@ export default function PageProduct ({ product }: { product: IProduct }) {
   return (
     <>
       <Script
-        id={`fb-pixel-${product.name}`}
+        id={`fb-pixel-${product.slug}`}
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{
         __html: `
-        fbq('track', 'ViewContent', {content_name: ${product.slug}, content_category: ${product.category}, currency: "CLP", value: ${product.price}});
+        fbq('track', 'ViewContent', {content_name: ${product.name}, content_category: ${product.category}, currency: "CLP", value: ${product.price}});
         `,
         }}
       />
