@@ -124,7 +124,7 @@ const CheckOut = () => {
       const cartLocal: ICartProduct[] = JSON.parse(localStorage.getItem('cart')!)
       setCart(cartLocal)
       setSell({ ...sell, total: cartLocal.reduce((bef: any, curr: any) => bef + curr.price * curr.quantity, 0) })
-      fbq('track', 'AddPaymentInfo', {contents: cartLocal, currency: "CLP", value: cartLocal.reduce((bef, curr) => curr.quantityOffers?.length ? offer(curr) : bef + curr.price * curr.quantity, 0) + Number(sell.shipping)});
+      fbq('track', 'AddPaymentInfo', {contents: cartLocal, currency: "CLP", value: cartLocal.reduce((bef, curr) => curr.quantityOffers?.length ? offer(curr) : bef + curr.price * curr.quantity, 0) + Number(sell.shipping)})
       await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/information`, { cart: cartLocal, fbp: Cookies.get('_fbp'), fbc: Cookies.get('_fbc') })
     }
   }
@@ -210,6 +210,7 @@ const CheckOut = () => {
       Cookies.set('city', sell.city)
       Cookies.set('region', sell.region)
     }
+    fbq('track', 'InitiateCheckout', {contents: sell.cart, currency: "CLP", value: sell.cart.reduce((bef, curr) => curr.quantityOffers?.length ? offer(curr) : bef + curr.price * curr.quantity, 0) + Number(sell.shipping)})
     const form = document.getElementById('formTransbank') as HTMLFormElement
     if (form) {
       form.submit()
@@ -245,6 +246,7 @@ const CheckOut = () => {
       Cookies.set('city', sell.city)
       Cookies.set('region', sell.region)
     }
+    fbq('track', 'Purchase', {contents: sell.cart, currency: "CLP", value: sell.cart.reduce((bef, curr) => curr.quantityOffers?.length ? offer(curr) : bef + curr.price * curr.quantity, 0) + Number(sell.shipping)})
     router.push('/gracias-por-comprar')
     setSubmitLoading(false)
   }
@@ -278,6 +280,7 @@ const CheckOut = () => {
       Cookies.set('city', sell.city)
       Cookies.set('region', sell.region)
     }
+    fbq('track', 'InitiateCheckout', {contents: sell.cart, currency: "CLP", value: sell.cart.reduce((bef, curr) => curr.quantityOffers?.length ? offer(curr) : bef + curr.price * curr.quantity, 0) + Number(sell.shipping)})
     window.location.href = link
     setSubmitLoading(false)
   }
