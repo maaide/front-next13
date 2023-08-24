@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import { initMercadoPago } from '@mercadopago/sdk-react'
+import Script from 'next/script'
 
 const CheckOut = () => {
 
@@ -284,6 +285,15 @@ const CheckOut = () => {
       <Head>
         <title>Finalizar compra</title>
       </Head>
+      <Script
+        id='fb-pixel-finalizar'
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+        __html: `
+        fbq('track', 'AddPaymentInfo', {contents: ${sell.cart}, currency: "CLP", value: ${sell.cart.reduce((bef, curr) => curr.quantityOffers?.length ? offer(curr) : bef + curr.price * curr.quantity, 0) + Number(sell.shipping)}});
+        `,
+        }}
+      />
       <div onClick={() => {
         if (!contactMouse) {
           setContactOpacity('opacity-0')
