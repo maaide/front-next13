@@ -44,7 +44,6 @@ export default async function ({ params }: { params: { product: string } }) {
 
   return (
     <>
-      <PageProduct product={product} />
       <Script
         id="fb-pixel"
         strategy="afterInteractive"
@@ -54,6 +53,7 @@ export default async function ({ params }: { params: { product: string } }) {
         `,
         }}
       />
+      <PageProduct product={product} />
     </>
   )
 }
