@@ -8,7 +8,6 @@ import { ButtonAddToCart, ButtonNone, ItemCounter, ProductSlider, Spinner } from
 import Link from "next/link"
 import Image from 'next/image'
 import { NumberFormat } from "@/utils"
-import Script from "next/script"
 
 export default function PageProduct ({ product }: { product: IProduct }) {
 
@@ -83,11 +82,6 @@ export default function PageProduct ({ product }: { product: IProduct }) {
 
   return (
     <>
-      <Script id="view_content_pixel">
-        {`
-          fbq('track', 'ViewContent', {content_name: ${product.name}, content_category: ${product.category.category}, currency: "CLP", value: ${product.price}})
-        `}
-      </Script>
       {
         product?.stock > 0
           ? (
