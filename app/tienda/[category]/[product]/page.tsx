@@ -2,6 +2,7 @@ import PageProduct from "@/components/products/PageProduct"
 import { IProduct } from "@/interfaces"
 import Cookies from 'js-cookie'
 import type { Metadata } from 'next'
+import Script from "next/script"
 
 export const revalidate = 60
 
@@ -42,6 +43,16 @@ export default async function ({ params }: { params: { product: string } }) {
   const product: IProduct = await fetchProduct(params.product)
 
   return (
-    <PageProduct product={product} />
+    <>
+      <PageProduct product={product} />
+      <Script
+        id="fb-pixel"
+        dangerouslySetInnerHTML={{
+        __html: `
+        fbq('track', 'ViewContent', { content_name: ${product.name}, content_category: ${product.category.category}, currency: "CLP", value: ${product.price} });
+        `,
+        }}
+      />
+    </>
   )
 }
