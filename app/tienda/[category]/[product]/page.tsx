@@ -1,21 +1,12 @@
 import PageProduct from "@/components/products/PageProduct"
 import { IProduct } from "@/interfaces"
-import Cookies from 'js-cookie'
 import type { Metadata } from 'next'
 
 export const revalidate = 60
 
 async function fetchProduct (product: string) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${product}`)
-  const prod: any = res.json()
-  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/view-content`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ product: prod, fbp: Cookies.get('_fbp'), fbc: Cookies.get('_fbc') })
-  })
-  return prod
+  return res.json()
 }
  
 export async function generateMetadata({

@@ -1,7 +1,7 @@
 "use client"
 import DesignContext from "@/context/design/DesignContext"
 import { useProducts } from "@/hooks"
-import { ICartProduct, ICategory, IProduct } from "@/interfaces"
+import { ICartProduct, IProduct } from "@/interfaces"
 import { useContext, useEffect, useState } from "react"
 import { NoReviews, NoReviewsProduct, ProductDetails, ProductOffer, RecomendedProducts, Reviews, ReviewsProduct, ShippingCost } from "."
 import { ButtonAddToCart, ButtonNone, ItemCounter, ProductSlider, Spinner } from "../ui"
@@ -9,6 +9,8 @@ import Link from "next/link"
 import Image from 'next/image'
 import { NumberFormat } from "@/utils"
 import Script from "next/script"
+import axios from "axios"
+import Cookies from 'js-cookie'
 
 export default function PageProduct ({ product }: { product: IProduct }) {
 
@@ -36,6 +38,14 @@ export default function PageProduct ({ product }: { product: IProduct }) {
     
   const { products, isLoadingProducts } = useProducts('/products')
   const { design } = useContext(DesignContext)
+
+  const viewContent = async () => {
+    await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/view-content`, { product: product, fbp: Cookies.get('_fbp'), fbc: Cookies.get('_fbc') })
+  }
+
+  useEffect(() => {
+    viewContent()
+  }, [])
     
   const filterProducts = () => {
     if (products.length) {
