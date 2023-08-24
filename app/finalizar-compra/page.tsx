@@ -13,7 +13,8 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import { initMercadoPago } from '@mercadopago/sdk-react'
-import Script from 'next/script'
+
+declare const fbq: Function
 
 const CheckOut = () => {
 
@@ -120,9 +121,10 @@ const CheckOut = () => {
 
   const getCart = async () => {
     if (typeof window !== 'undefined') {
-      const cartLocal = JSON.parse(localStorage.getItem('cart')!)
+      const cartLocal: ICartProduct[] = JSON.parse(localStorage.getItem('cart')!)
       setCart(cartLocal)
       setSell({ ...sell, total: cartLocal.reduce((bef: any, curr: any) => bef + curr.price * curr.quantity, 0) })
+      fbq('track', 'AddPaymentInfo', {contents: cartLocal, currency: "CLP", value: cartLocal.reduce((bef, curr) => curr.quantityOffers?.length ? offer(curr) : bef + curr.price * curr.quantity, 0) + Number(sell.shipping)});
       await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/information`, { cart: cartLocal, fbp: Cookies.get('_fbp'), fbc: Cookies.get('_fbc') })
     }
   }
@@ -285,15 +287,6 @@ const CheckOut = () => {
       <Head>
         <title>Finalizar compra</title>
       </Head>
-      <Script
-        id='fb-pixel-finalizar'
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-        __html: `
-        fbq('track', 'AddPaymentInfo', {contents: ${sell.cart}, currency: "CLP", value: ${sell.cart.reduce((bef, curr) => curr.quantityOffers?.length ? offer(curr) : bef + curr.price * curr.quantity, 0) + Number(sell.shipping)}});
-        `,
-        }}
-      />
       <div onClick={() => {
         if (!contactMouse) {
           setContactOpacity('opacity-0')
