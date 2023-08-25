@@ -11,6 +11,7 @@ import { NumberFormat } from "@/utils"
 import Script from "next/script"
 import axios from "axios"
 import Cookies from 'js-cookie'
+import Head from "next/head"
 
 export default function PageProduct ({ product }: { product: IProduct }) {
 

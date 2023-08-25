@@ -25,7 +25,8 @@ export async function generateMetadata({
       title: product.titleSeo !== '' ? product.titleSeo : product.name,
       description: product.descriptionSeo !== '' ? product.descriptionSeo : `Esta es la pagina del producto ${product.name}`,
       images: [product.images[0].url],
-    },
+      url: `${process.env.NEXT_PUBLIC_WEB_URL}/tienda/${product.category.slug}/${product.slug}`
+    }
   }
 }
 
@@ -33,6 +34,15 @@ export default async function ({ params }: { params: { product: string } }) {
   const product: IProduct = await fetchProduct(params.product)
 
   return (
-    <PageProduct product={product} />
+    <>
+      <head>
+        <meta property="product:price:amount" content={product.price.toString()} />
+        <meta property="product:price:currency" content="clp" />
+        <meta property="product:availability" content={product.stock > 0 ? 'in stock' : 'Out of stock'} />
+        <meta property="product:retailer_item_id" content={product._id} />
+      </head>
+      <PageProduct product={product} />
+    </>
+    
   )
 }
