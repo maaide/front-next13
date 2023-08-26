@@ -13,6 +13,8 @@ import axios from "axios"
 import Cookies from 'js-cookie'
 import Head from "next/head"
 
+declare const fbq: Function
+
 export default function PageProduct ({ product }: { product: IProduct }) {
 
   const [tempCartProduct, setTempCartProduct] = useState<ICartProduct>({
@@ -41,7 +43,8 @@ export default function PageProduct ({ product }: { product: IProduct }) {
   const { design } = useContext(DesignContext)
 
   const viewContent = async () => {
-    await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/view-content`, { product: product, fbp: Cookies.get('_fbp'), fbc: Cookies.get('_fbc') })
+    const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/view-content`, { product: product, fbp: Cookies.get('_fbp'), fbc: Cookies.get('_fbc') })
+    fbq('track', 'ViewContent', {content_name: product.name, content_category: product.category.category, currency: "clp", value: product.price, content_ids: [product._id], contents: { id: product._id, category: product.category.category, item_price: product.price, title: product.name, event_id: res.data._id }})
   }
 
   useEffect(() => {
@@ -94,15 +97,6 @@ export default function PageProduct ({ product }: { product: IProduct }) {
 
   return (
     <>
-      <Script
-        id={`fb-pixel-${product.slug}`}
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-        __html: `
-        fbq('track', 'ViewContent', {content_name: "${product.name}", content_category: "${product.category.category}", currency: "clp", value: ${product.price}, content_ids: ['${product._id}'], contents: { id: '${product._id}', category: '${product.category.category}', item_price: ${product.price}, title: '${product.name}' }});
-        `,
-        }}
-      />
       {
         product?.stock > 0
           ? (
