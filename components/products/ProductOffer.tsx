@@ -14,7 +14,7 @@ export const ProductOffer: React.FC<Props> = ({ offer }) => {
     name: offer.productsSale[0].name,
     image: offer.productsSale[0].images[0].url,
     price: offer.price,
-    beforePrice: offer.productsSale[0].beforePrice,
+    beforePrice: offer.productsSale[0].beforePrice ? offer.productsSale[0].beforePrice : offer.productsSale[0].price,
     slug: offer.productsSale[0].slug,
     variation: offer.productsSale[0].variations?.variations.length ? offer.productsSale[0].variations.variations[0] : undefined,
     quantity: 1,

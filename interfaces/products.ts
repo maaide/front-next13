@@ -42,6 +42,7 @@ export interface IProductsOffer {
 
 export interface IProductOffer {
   name: string
+  price: number
   beforePrice: number
   images: { public_id: string, url : string }[]
   slug: string
