@@ -9,10 +9,10 @@ const socket = io(`${process.env.NEXT_PUBLIC_API_URL}/`)
 export const Chat = () => {
 
   const [chatDisplay, setChatDisplay] = useState('hidden')
-  const [chatOpacity, setChatOpacity] = useState('opacity-0')
+  const [chatOpacity, setChatOpacity] = useState('opacity-0 -mb-20')
   const [chat, setChat] = useState<IMessage[]>([{
     agent: false,
-    response: '¡Hola! Mi nombre es Maaibot y soy un asistente virtual de la tienda Maaide, ¿En que te puedo ayudar?',
+    response: '¡Hola! Mi nombre es Maaibot y soy un asistente virtual de la tienda Maaide, ¿En que te puedo ayudar?. Si en algun momento necesitas hablar con un agente escribe "agente" en el chat',
     adminView: false,
     userView: false
   }])
@@ -97,7 +97,7 @@ export const Chat = () => {
 
   return (
     <div className='fixed bottom-3 right-3 z-50 flex flex-col gap-3 sm:gap-6 sm:bottom-6 sm:right-6'>
-      <div className={`${chatDisplay} ${chatOpacity} justify-between flex-col gap-3 transition-opacity duration-200 bg-white shadow-md w-80 h-[450px] rounded-xl dark:bg-main sm:w-96 sm:h-[600px] sm:gap-4`}>
+      <div className={`${chatDisplay} ${chatOpacity} z-40 justify-between flex-col gap-3 transition-all duration-200 bg-white shadow-md rounded-xl dark:bg-main sm:w-96 sm:h-[600px] sm:gap-4`}>
         <div className='h-28 w-full bg-main rounded-t-xl flex p-4'>
           <span className='text-white mt-auto mb-auto text-xl'>Maaibot</span>
         </div>
@@ -142,7 +142,7 @@ export const Chat = () => {
             setChatOpacity('opacity-1')
           }, 50)
         } else {
-          setChatOpacity('opacity-0')
+          setChatOpacity('opacity-0 -mb-20')
           setTimeout(() => {
             setChatDisplay('hidden')
           }, 200)
@@ -155,9 +155,9 @@ export const Chat = () => {
           chat[0].userView = true
           setChat(chat)
         }
-      }} className='w-14 h-14 bg-main flex rounded-full ml-auto shadow-md'>
+      }} className='w-14 h-14 z-50 bg-main flex rounded-full ml-auto shadow-md'>
         {
-          chatOpacity === 'opacity-0'
+          chatOpacity === 'opacity-0 -mb-20'
             ? (
               <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 16 16" className="text-3xl text-white m-auto" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
                 <path d="M5 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"></path><path d="m2.165 15.803.02-.004c1.83-.363 2.948-.842 3.468-1.105A9.06 9.06 0 0 0 8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6a10.437 10.437 0 0 1-.524 2.318l-.003.011a10.722 10.722 0 0 1-.244.637c-.079.186.074.394.273.362a21.673 21.673 0 0 0 .693-.125zm.8-3.108a1 1 0 0 0-.287-.801C1.618 10.83 1 9.468 1 8c0-3.192 3.004-6 7-6s7 2.808 7 6c0 3.193-3.004 6-7 6a8.06 8.06 0 0 1-2.088-.272 1 1 0 0 0-.711.074c-.387.196-1.24.57-2.634.893a10.97 10.97 0 0 0 .398-2z"></path>
