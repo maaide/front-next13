@@ -168,9 +168,9 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
           : ''
       }
       <div style={{ top: '-0.5px' }} className='sticky border-b flex bg-white w-full z-30 dark:bg-neutral-900 dark:border-neutral-800'>
-        <div className='m-auto w-full flex justify-between px-2 z-40 575:py-0'>
-          <div className='m-auto w-[1280px] flex justify-between z-40 py-1 575:py-0'>
-          <div className='hidden gap-2 575:flex'>
+        <div className='m-auto w-full flex justify-between px-2 z-40 650:py-0'>
+          <div className='m-auto w-[1280px] flex justify-between z-40 py-1 650:py-0'>
+          <div className='hidden gap-2 650:flex'>
             {
               !mounted
                 ? <Link href='/'><div className='h-[52px] w-1 flex'><p className='m-auto text-2xl font-semibold'>TIENDA</p></div></Link>
@@ -188,7 +188,7 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
           {
             pathname !== '/finalizar-compra'
               ? <>
-                <div className='hidden gap-6 575:flex'>
+                <div className='hidden gap-6 650:flex'>
                   <Link className='mt-auto flex text-[15px] h-full font-medium text-[#1c1b1b] tracking-widest mb-auto dark:text-white' href='/'>
                     <div className='mt-auto text-[15px] font-medium text-[#1c1b1b] tracking-widest mb-auto dark:text-white'>INICIO</div>
                   </Link>
@@ -288,7 +288,7 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
                   }
                   {renderThemeChanger()}
                 </div>
-                <div className='flex px-1 w-full justify-between gap-4 575:hidden'>
+                <div className='flex px-1 w-full justify-between gap-4 650:hidden'>
                   <div className='flex w-full gap-4'>
                     {
                       menu === 'w-0 pl-0 pr-0 pt-6 pb-6'
@@ -345,18 +345,18 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
                         )
                     }
                   </div>
-                  <div className='flex gap-2 575:hidden'>
+                  <div className='flex gap-2 650:hidden'>
                     {
                       !mounted
                         ? <Link href='/'><div className='h-[42px] w-1 flex'><p className='m-auto text-xl font-semibold'>TIENDA</p></div></Link>
                         : storeData?.logo && storeData?.logo.url !== ''
                           ? theme === 'system'
                             ? systemTheme === 'dark'
-                              ? <Link href='/'><Image onLoad={() => setLogoLoad(true)} className='w-96 h-[42px] py-0.5' src={`${storeData.logoWhite.url}`} alt='Logo' width={155} height={53.72} /></Link>
-                              : <Link href='/'><Image onLoad={() => setLogoLoad(true)} className='w-96 h-[42px] py-0.5' src={`${storeData.logo.url}`} alt='Logo' width={155} height={53.72} /></Link>
+                              ? <Link href='/'><Image onLoad={() => setLogoLoad(true)} className='max-w-[110px] min-w-[110px] h-[42px] py-0.5' src={`${storeData.logoWhite.url}`} alt='Logo' width={155} height={53.72} /></Link>
+                              : <Link href='/'><Image onLoad={() => setLogoLoad(true)} className='max-w-[110px] min-w-[110px] py-0.5' src={`${storeData.logo.url}`} alt='Logo' width={155} height={53.72} /></Link>
                             : theme === 'dark'
-                              ? <Link href='/'><Image onLoad={() => setLogoLoad(true)} className='w-96 h-[42px] py-0.5' src={`${storeData.logoWhite.url}`} alt='Logo' width={155} height={53.72} /></Link>
-                              : <Link href='/'><Image onLoad={() => setLogoLoad(true)} className='w-96 h-[42px] py-0.5' src={`${storeData.logo.url}`} alt='Logo' width={155} height={53.72} /></Link>
+                              ? <Link href='/'><Image onLoad={() => setLogoLoad(true)} className='max-w-[110px] min-w-[110px] py-0.5' src={`${storeData.logoWhite.url}`} alt='Logo' width={155} height={53.72} /></Link>
+                              : <Link href='/'><Image onLoad={() => setLogoLoad(true)} className='max-w-[110px] min-w-[110px] py-0.5' src={`${storeData.logo.url}`} alt='Logo' width={155} height={53.72} /></Link>
                           : <Link href='/'><div onLoad={() => setLogoLoad(true)} className='h-[42px] flex'><p className='m-auto text-xl font-semibold'>TIENDA</p></div></Link>
                     }
                   </div>
