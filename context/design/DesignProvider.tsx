@@ -32,6 +32,8 @@ const DesignProvider: React.FC<PropsWithChildren> = ({ children }) => {
       }
     },
     product: {
+      titleInfo: '',
+      textInfo: '',
       title: '',
       sectionProducts: 'Todos los productos'
     },
