@@ -19,6 +19,8 @@ export interface IDesign {
         }
     }
     product: {
+        titleInfo: string
+        textInfo: string
         title: string
         sectionProducts: string
         category?: string

@@ -8,10 +8,8 @@ import { ButtonAddToCart, ButtonNone, ItemCounter, ProductSlider, Spinner } from
 import Link from "next/link"
 import Image from 'next/image'
 import { NumberFormat } from "@/utils"
-import Script from "next/script"
 import axios from "axios"
 import Cookies from 'js-cookie'
-import Head from "next/head"
 
 declare const fbq: Function
 
@@ -297,31 +295,36 @@ export default function PageProduct ({ product }: { product: IProduct }) {
                   : ''
               }
             </div>
-            <div className='mt-4 pb-4 border-b dark:border-neutral-800'>
-              <button onClick={(e: any) => {
-                e.preventDefault()
-                if (returnView) {
-                  setReturnView(false)
-                  setReturnRotate('rotate-90')
-                } else {
-                  setReturnView(true)
-                  setReturnRotate('-rotate-90')
-                }
-              }} className='flex gap-2 w-full justify-between'>
-                <h5 className='text-[14px] tracking-widest text-main font-semibold md:text-[16px] dark:text-white'>ENVÍOS Y RETORNOS</h5>
-                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" className={`${returnRotate} transition-all duration-150 ml-auto text-lg w-4 text-neutral-500`} xmlns="http://www.w3.org/2000/svg"><path d="M765.7 486.8L314.9 134.7A7.97 7.97 0 0 0 302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 0 0 0-50.4z"></path></svg>
-              </button>
-              {
-                returnView
-                  ? (
-                    <div className='mt-2'>
-                      <p className='text-sm mb-2 text-[#444444] dark:text-neutral-400 md:text-[16px]'>Nuestros envios pueden demorar 1500 años habiles, lo que habiles es muy importante por que puede llegar el dia 1 del año 1500 o el dia 2 del año 1500</p>
-                      <p className='text-sm mb-2 text-[#444444] dark:text-neutral-400 md:text-[16px]'>Si te llega malo el producto cagaste, no haremos nada para solucionar tu problema asi que busca ayuda por otro lado</p>
-                    </div>
-                  )
-                  : ''
-              }
-            </div>
+            {
+              design.product.titleInfo && design.product.titleInfo !== '' && design.product.textInfo && design.product.textInfo !== ''
+                ? (
+                  <div className='mt-4 pb-4 border-b dark:border-neutral-800'>
+                    <button onClick={(e: any) => {
+                      e.preventDefault()
+                      if (returnView) {
+                        setReturnView(false)
+                        setReturnRotate('rotate-90')
+                      } else {
+                        setReturnView(true)
+                        setReturnRotate('-rotate-90')
+                      }
+                    }} className='flex gap-2 w-full justify-between'>
+                      <h5 className='text-[14px] tracking-widest text-main font-semibold md:text-[16px] dark:text-white'>{design.product.titleInfo.toUpperCase()}</h5>
+                      <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" className={`${returnRotate} transition-all duration-150 ml-auto text-lg w-4 text-neutral-500`} xmlns="http://www.w3.org/2000/svg"><path d="M765.7 486.8L314.9 134.7A7.97 7.97 0 0 0 302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 0 0 0-50.4z"></path></svg>
+                    </button>
+                    {
+                      returnView
+                        ? (
+                          <div className='mt-2'>
+                            <p className='text-sm mb-2 text-[#444444] dark:text-neutral-400 md:text-[16px]'>{design.product.textInfo}</p>
+                          </div>
+                        )
+                        : ''
+                    }
+                  </div>
+                )
+                : ''
+            }
           </div>
         </div>
       </div>
