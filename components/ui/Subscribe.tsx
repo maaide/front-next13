@@ -34,7 +34,7 @@ export const Subscribe = () => {
   }
 
   return (
-    <div className='w-full bg-neutral-100 pl-4 pr-4 flex dark:bg-neutral-900'>
+    <div className='w-full bg-neutral-100 pl-4 pr-4 flex dark:bg-neutral-900/40'>
       <form className='m-auto w-1280 mt-16 mb-16'>
         <h4 className='mb-4 text-[16px] font-semibold tracking-widest text-main text-center md:text-[20px] dark:text-white'>{design.subscription.title !== '' ? design.subscription.title.toUpperCase() : 'SUSCRIBETE EN NUESTRA LISTA PARA RECIBIR OFERTAS EXCLUSIVAS, SORTEOS Y MUCHO MÁS'}</h4>
         <div className='flex'>

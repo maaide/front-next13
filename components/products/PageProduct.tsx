@@ -194,9 +194,9 @@ export default function PageProduct ({ product }: { product: IProduct }) {
                     <div className='flex gap-2'>
                       {
                         product.quantityOffers.map(offer => (
-                          <div key={offer._id} className='p-2 border rounded w-16 flex flex-col dark:border-neutral-700'>
+                          <div key={offer._id} className='p-2 border rounded w-20 flex flex-col dark:border-neutral-700'>
                             <p className='text-sm m-auto'>{offer.quantity}+</p>
-                            <p className='text-sm m-auto'>{offer.descount}%</p>
+                            <p className='text-sm m-auto'>${NumberFormat(Math.round((product.price / 100) * (100 - offer.descount)))}</p>
                           </div>
                         ))
                       }
