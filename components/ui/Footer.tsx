@@ -42,7 +42,7 @@ export const Footer = () => {
   }, [])
 
   return (
-    <div className='flex pl-4 pr-4 pt-14 pb-24 bg-neutral-900'>
+    <div className='flex pl-4 pr-4 pt-14 pb-24 z-40 bg-neutral-900'>
       <div className='w-1280 m-auto'>
         <div className='flex gap-4 justify-between flex-wrap pb-6 border-b'>
           <div>
@@ -92,7 +92,7 @@ export const Footer = () => {
             <Link className='block text-white text-sm mb-1' href='/envio'>Politicas de envío</Link>
           </div>
         </div>
-        <div>
+        <div className='mt-4'>
           <span className='text-white text-sm'>© 2023 {storeData.name}. Todos los derechos reservados</span>
         </div>
       </div>

@@ -68,7 +68,7 @@ export default function PageProduct ({ product }: { product: IProduct }) {
     
   const handleScroll = () => {
     const position = window.scrollY
-    if (position > 375) {
+    if (position > 350) {
       setDetailsOpacity('opacity-1')
       setDetailsPosition('-bottom-1')
     } else {
