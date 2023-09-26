@@ -568,14 +568,14 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
                   {categories.map(category => (
                     <div key={category._id}>
                       <Image className='w-64 h-auto mb-2 cursor-pointer' onClick={() => {
-                        setNavCategoriesOpacity('opacity-0')
+                        setNavCategoriesOpacity('opacity-0 -mt-[30px]')
                         setTimeout(() => {
                           setNavCategories('hidden')
                         }, 200)
                         router.push(`/tienda/${category.slug}`)
                       }} src={category.image?.url!} width={256} height={256} alt={`Categoria ${category.category}`} />
                       <Link href={`/tienda/${category.slug}`} onClick={() => {
-                        setNavCategoriesOpacity('opacity-0')
+                        setNavCategoriesOpacity('opacity-0 -mt-[30px]')
                         setTimeout(() => {
                           setNavCategories('hidden')
                         }, 200)
