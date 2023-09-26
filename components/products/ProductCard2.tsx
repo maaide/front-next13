@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from 'react'
-import { ICartProduct, ICategory, IProduct } from '../../interfaces'
+import React, { useEffect, useState } from 'react'
+import { ICartProduct, IProduct } from '../../interfaces'
 import { NumberFormat } from '../../utils'
 import { ReviewsProductCard } from '.'
 import { Button2AddToCart } from '../ui'
@@ -22,16 +22,33 @@ export default function ProductCard2 ({ product }: { product: IProduct }) {
   })
   const [isHovered, setIsHovered] = useState(false)
   const [isImageLoaded, setIsImageLoaded] = useState(false)
+  const [image, setImage] = useState('')
+  const [opacity, setOpacity] = useState('opacity-1')
+
   const router = useRouter()
 
-  const productImage = useMemo(() => {
+  const changeImage = () => {
     if (product.images[1]) {
-      return isHovered
-      ? product.images[1]
-      : product.images[0]
+      if (isHovered) {
+        setOpacity('opacity-0')
+        setTimeout(() => {
+          setImage(product.images[1].url)
+          setOpacity('opacity-1')
+        }, 100)
+      } else {
+        setOpacity('opacity-0')
+        setTimeout(() => {
+          setImage(product.images[0].url)
+          setOpacity('opacity-1')
+        }, 100)
+      }
     } else {
-      return product.images[0]
+      setImage(product.images[0].url)
     }
+  }
+
+  useEffect(() => {
+    changeImage()
   }, [isHovered, product.images])
 
   let stars = 0
@@ -40,11 +57,11 @@ export default function ProductCard2 ({ product }: { product: IProduct }) {
   return (
     <div className='inline-block p-2 m-auto w-40 450:w-52 580:w-64'>
       <Image
-        src={ productImage.url } alt={ productImage.url }
+        src={ image } alt={ image }
         onLoad={ () => setIsImageLoaded(true) }
         onMouseEnter={ () => setIsHovered(true) }
         onMouseLeave={ () => setIsHovered(false) }
-        className='m-auto cursor-pointer w-40 h-auto 450:w-44 580:w-52'
+        className={`m-auto ${opacity} transition-opacity duration-200 cursor-pointer w-40 h-auto 450:w-44 580:w-52`}
         style={{ borderRadius: '8px' }}
         onClick={() => router.push(`/tienda/${product.category.slug}/${product.slug}`)}
         width={250}
