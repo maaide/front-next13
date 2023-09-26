@@ -36,7 +36,7 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
   const [accountPc, setAccountPc] = useState(true)
   const [account, setAccount] = useState('Ingresar')
   const [navCategories, setNavCategories] = useState('hidden')
-  const [navCategoriesOpacity, setNavCategoriesOpacity] = useState('opacity-0')
+  const [navCategoriesOpacity, setNavCategoriesOpacity] = useState('opacity-0 -mt-[30px]')
   const [categoriesPhone, setCategoriesPhone] = useState('hidden')
   const [menuButtons, setMenuButtons] = useState('opacity-0')
   const [storeData, setStoreData] = useState<IStoreData>({
@@ -167,9 +167,9 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
             : ''
           : ''
       }
-      <div style={{ top: '-0.5px' }} className='sticky border-b flex bg-white w-full z-30 dark:bg-neutral-900 dark:border-neutral-800'>
-        <div className='m-auto w-full flex justify-between px-2 z-40 650:py-0'>
-          <div className='m-auto w-[1280px] flex justify-between z-40 py-1 650:py-0'>
+      <div style={{ top: '-0.5px' }} className='sticky flex bg-white w-full z-40 dark:bg-neutral-900 dark:border-neutral-800'>
+        <div className='m-auto w-full absolute bg-white border-b flex justify-between px-2 650:py-0'>
+          <div className='m-auto w-[1280px] flex justify-between py-1 650:py-0'>
           <div className='hidden gap-2 650:flex'>
             {
               !mounted
@@ -195,17 +195,17 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
                   <Link className='flex h-full' href='/tienda' onMouseEnter={() => {
                     setNavCategories('flex')
                     setTimeout(() => {
-                      setNavCategoriesOpacity('opacity-1')
+                      setNavCategoriesOpacity('opacity-1 -mt-[1px]')
                     }, 50)
                   }} onMouseLeave={() => {
-                    setNavCategoriesOpacity('opacity-0')
+                    setNavCategoriesOpacity('opacity-0 -mt-[30px]')
                     setTimeout(() => {
                       if (!mouseEnter) {
                         setNavCategories('hidden')
                       }
                     }, 200)
                   }} onClick={() => {
-                    setNavCategoriesOpacity('opacity-0')
+                    setNavCategoriesOpacity('opacity-0 -mt-[30px]')
                     setTimeout(() => {
                       setNavCategories('hidden')
                     }, 200)
@@ -551,12 +551,12 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
             }, 150)
           }} />
         </div>
-        <div className={`${navCategories} ${navCategoriesOpacity} -mt-[1px] border-t transition-opacity duration-200 absolute top-[53px] w-full dark:border-neutral-800`} onMouseEnter={() => {
+        <div className={`${navCategories} ${navCategoriesOpacity} -z-10 border-t box-border transition-all duration-200 absolute top-[53px] w-full dark:border-neutral-800`} onMouseEnter={() => {
           setMouseEnter(true)
           setNavCategories('flex')
-          setNavCategoriesOpacity('opacity-1')
+          setNavCategoriesOpacity('opacity-1 -mt-[1px]')
         }} onMouseLeave={() => {
-          setNavCategoriesOpacity('opacity-0')
+          setNavCategoriesOpacity('opacity-0 -mt-[30px]')
           setTimeout(() => {
             setNavCategories('hidden')
           }, 200)
