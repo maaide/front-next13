@@ -12,9 +12,10 @@ interface Props {
   setCartPc?: any
   cartOpacity: any
   setCartOpacity: any
+  setCartPosition: any
 }
 
-export const NavbarCart: React.FC<Props> = ({ setCartView, setCartPc, cartOpacity, setCartOpacity }) => {
+export const NavbarCart: React.FC<Props> = ({ setCartView, setCartPc, cartOpacity, setCartOpacity, setCartPosition }) => {
 
   const {cart, setCart} = useContext(CartContext)
 
@@ -32,8 +33,9 @@ export const NavbarCart: React.FC<Props> = ({ setCartView, setCartPc, cartOpacit
               cart.map((product: ICartProduct) => (
                 <div key={product.slug} className='flex gap-1 justify-between mb-2'>
                   <div className='flex gap-2'>
-                    <Link href={`/productos/${product.slug}`} onClick={() => {
+                    <Link href={`/tienda/${product.category.slug}/${product.slug}`} onClick={() => {
                       setCartOpacity('opacity-0')
+                      setCartPosition('-mt-[30px]')
                       setTimeout(() => {
                         setCartView('hidden')
                       }, 200)
@@ -41,8 +43,9 @@ export const NavbarCart: React.FC<Props> = ({ setCartView, setCartPc, cartOpacit
                       <Image src={product.image} alt={product.name} width={96} height={96} className='w-24 h-24 mt-auto mb-auto' />
                     </Link>
                     <div className='mt-auto mb-auto'>
-                      <Link href={`/productos/${product.slug}`} onClick={() => {
+                      <Link href={`/tienda/${product.category.slug}/${product.slug}`} onClick={() => {
                         setCartOpacity('opacity-0')
+                        setCartPosition('-mt-[30px]')
                         setTimeout(() => {
                           setCartView('hidden')
                         }, 200)
@@ -125,12 +128,14 @@ export const NavbarCart: React.FC<Props> = ({ setCartView, setCartPc, cartOpacit
             <div className='mt-4'>
               <Link className='pt-1.5 pb-1.5 rounded-md transition-colors duration-200 bg-button text-white hover:bg-white hover:text-main' onClick={() => {
                 setCartOpacity('opacity-0')
+                setCartPosition('-mt-[30px]')
                 setTimeout(() => {
                   setCartView('hidden')
                 }, 200)
               }} href='/finalizar-compra'><button className='w-full'>Finalizar compra</button></Link>
               <Link href='/carrito' onClick={() => {
                 setCartOpacity('opacity-0')
+                setCartPosition('-mt-[30px]')
                 setTimeout(() => {
                   setCartView('hidden')
                 }, 200)
@@ -141,6 +146,7 @@ export const NavbarCart: React.FC<Props> = ({ setCartView, setCartPc, cartOpacit
             <p className='mb-4 text-[#444444] dark:text-neutral-400'>No tienes productos añadidos al carrito</p>
             <Link className='pt-1.5 pb-1.5 rounded-md transition-colors duration-200 bg-main text-white hover:bg-white hover:text-main dark:bg-[#22262c] dark:hover:text-main dark:hover:bg-white' href='/tienda' onClick={() => {
               setCartOpacity('opacity-0')
+              setCartPosition('-mt-[30px]')
               setTimeout(() => {
                 setCartView('hidden')
               }, 200)

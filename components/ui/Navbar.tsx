@@ -467,7 +467,7 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
         <div className={`${cartView} ${cartPosition} transition-all duration-200 w-full -z-10 absolute top-[51px] 650:hidden`} style={{ height: 'calc(100vh - 91px)' }}>
           <div className='w-1440 ml-auto mr-auto'>
             <div className='ml-auto h-fit flex w-full 400:w-96'>
-              <NavbarCart setCartView={setCartView} cartOpacity={cartOpacity} setCartOpacity={setCartOpacity} />
+              <NavbarCart setCartView={setCartView} cartOpacity={cartOpacity} setCartOpacity={setCartOpacity} setCartPosition={setCartPosition} />
             </div>
             <div onClick={() => {
               setCartOpacity('opacity-0')
@@ -489,7 +489,7 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
         }} className={`hidden ${cartPosition} -z-10 transition-all duration-200 absolute top-[53px] w-full 650:${cartView}`} style={{ height: 'calc(100vh - 91px)' }}>
           <div className='w-1440 ml-auto mr-auto'>
             <div className='ml-auto h-fit flex w-full 400:w-96'>
-              <NavbarCart setCartView={setCartView} setCartPc={setCartPc} cartOpacity={cartOpacity} setCartOpacity={setCartOpacity} />
+              <NavbarCart setCartView={setCartView} setCartPc={setCartPc} cartOpacity={cartOpacity} setCartOpacity={setCartOpacity} setCartPosition={setCartPosition} />
             </div>
           </div>
         </div>
