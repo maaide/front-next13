@@ -12,6 +12,7 @@ export const MainLayout: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <>
       <Navbar menu={menu} setMenu={setMenu} setIndex={setIndex} index={index}>
+        <div className='h-[53px]' />
         { children }
         {
           pathname !== '/finalizar-compra'
