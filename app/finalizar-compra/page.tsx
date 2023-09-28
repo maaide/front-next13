@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Shipping } from '../../components/products'
 import { Button2 } from '../../components/ui'
 import { ICartProduct, IClient, IQuantityOffer, ISell, IShipping, IStoreData, Region } from '../../interfaces'
@@ -40,7 +40,7 @@ const CheckOut = () => {
   })
   const [cart, setCart] = useState<ICartProduct[]>()
   const [shipping, setShipping] = useState<IShipping[]>()
-  const [details, setDetails] = useState('hidden')
+  const [details, setDetails] = useState(0)
   const [submitLoading, setSubmitLoading] = useState(false)
   const [token, setToken] = useState('')
   const [url, setUrl] = useState('')
@@ -62,6 +62,8 @@ const CheckOut = () => {
   const user = session?.user as { firstName: string, lastName: string, email: string, _id: string }
 
   const router = useRouter()
+
+  const detailsRef = useRef<HTMLDivElement>(null)
 
   initMercadoPago(process.env.MERCADOPAGO_PUBLIC_KEY!)
 
@@ -150,6 +152,12 @@ const CheckOut = () => {
   useEffect(() => {
     getStoreData()
   }, [])
+
+  useEffect(() => {
+    if (detailsRef.current) {
+      setDetails(rotate === '-rotate-90' ? detailsRef.current.scrollHeight : 0)
+    }
+  }, [rotate])
 
   const inputChange = async (e: any) => {
     setSell({ ...sell, [e.target.name]: e.target.value, buyOrder: `${storeData?.name ? storeData.name : 'ORDEN'}${Math.floor(Math.random() * 10000) + 1}` })
@@ -356,15 +364,13 @@ const CheckOut = () => {
       </div>
       <div className='fixed top-13 bg-[#F5F5F5] w-full border border-[#F5F5F5] p-4 shadow-md block 1010:hidden dark:bg-neutral-800 dark:border-neutral-700'>
         <button className='text-[14px] mb-4 flex gap-2' onClick={() => {
-          if (details === 'hidden') {
-            setDetails('block')
+          if (rotate === 'rotate-90') {
             setRotate('-rotate-90')
           } else {
-            setDetails('hidden')
             setRotate('rotate-90')
           }
         }}>{<svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 1024 1024" className={`${rotate} transition-all duration-150 m-auto w-4 text-lg text-neutral-500`} xmlns="http://www.w3.org/2000/svg"><path d="M765.7 486.8L314.9 134.7A7.97 7.97 0 0 0 302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 0 0 0-50.4z"></path></svg>} resumen del pedido</button>
-        <div className={`mb-2 ${details}`}>
+        <div ref={detailsRef} className={`mb-2`} style={{ maxHeight: `${details}px`, overflow: 'hidden', transition: 'max-height 0.2s' }}>
           <div className='border-b mb-2 pb-1 dark:border-neutral-700'>
             <h2 className='text-[16px] font-medium tracking-widest mb-2 md:text-[18px]'>CARRITO</h2>
             {

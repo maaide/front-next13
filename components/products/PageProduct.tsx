@@ -2,7 +2,7 @@
 import DesignContext from "@/context/design/DesignContext"
 import { useProducts } from "@/hooks"
 import { ICartProduct, IProduct } from "@/interfaces"
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { NoReviews, NoReviewsProduct, ProductDetails, ProductOffer, RecomendedProducts, Reviews, ReviewsProduct, ShippingCost } from "."
 import { ButtonAddToCart, ButtonNone, ItemCounter, ProductSlider, Spinner } from "../ui"
 import Link from "next/link"
@@ -27,11 +27,11 @@ export default function PageProduct ({ product }: { product: IProduct }) {
     category: product.category,
     quantityOffers: product.quantityOffers
   })
-  const [descriptionView, setDescriptionView] = useState(true)
+  const [descriptionView, setDescriptionView] = useState(0)
   const [descriptionRotate, setDescriptionRotate] = useState('-rotate-90')
-  const [returnView, setReturnView] = useState(false)
+  const [returnView, setReturnView] = useState(0)
   const [returnRotate, setReturnRotate] = useState('rotate-90')
-  const [shippingView, setShippingView] = useState(false)
+  const [shippingView, setShippingView] = useState(0)
   const [shippingRotate, setShippingRotate] = useState('rotate-90')
   const [detailsOpacity, setDetailsOpacity] = useState('opacity-0')
   const [detailsPosition, setDetailsPosition] = useState('-bottom-44')
@@ -39,6 +39,10 @@ export default function PageProduct ({ product }: { product: IProduct }) {
     
   const { products, isLoadingProducts } = useProducts('/products')
   const { design } = useContext(DesignContext)
+
+  const contentRef = useRef<HTMLDivElement>(null)
+  const shippingRef = useRef<HTMLDivElement>(null)
+  const infoRef = useRef<HTMLDivElement>(null)
 
   const viewContent = async () => {
     const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/view-content`, { product: product, fbp: Cookies.get('_fbp'), fbc: Cookies.get('_fbc') })
@@ -82,6 +86,24 @@ export default function PageProduct ({ product }: { product: IProduct }) {
       window.removeEventListener('scroll', handleScroll)
     }
   }, [])
+
+  useEffect(() => {
+    if (contentRef.current) {
+      setDescriptionView(descriptionRotate === '-rotate-90' ? contentRef.current.scrollHeight : 0)
+    }
+  }, [descriptionRotate])
+
+  useEffect(() => {
+    if (shippingRef.current) {
+      setShippingView(shippingRotate === '-rotate-90' ? shippingRef.current.scrollHeight : 0)
+    }
+  }, [shippingRotate])
+
+  useEffect(() => {
+    if (infoRef.current) {
+      setReturnView(returnRotate === '-rotate-90' ? infoRef.current.scrollHeight : 0)
+    }
+  }, [returnRotate])
     
   const onUpdateQuantity = ( quantity: number ) => {
     setTempCartProduct( currentProduct => ({
@@ -248,52 +270,36 @@ export default function PageProduct ({ product }: { product: IProduct }) {
             <div className='mt-4 border-b pb-4 dark:border-neutral-800'>
               <button onClick={(e: any) => {
                 e.preventDefault()
-                if (descriptionView) {
-                  setDescriptionView(false)
+                if (descriptionRotate === '-rotate-90') {
                   setDescriptionRotate('rotate-90')
                 } else {
-                  setDescriptionView(true)
                   setDescriptionRotate('-rotate-90')
                 }
               }} className='flex gap-2 w-full justify-between'>
                 <h5 className='text-[14px] tracking-widest text-main font-semibold md:text-[16px] dark:text-white'>DESCRIPCIÓN</h5>
                 <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" className={`${descriptionRotate} transition-all duration-150 ml-auto text-lg w-4 text-neutral-500`} xmlns="http://www.w3.org/2000/svg"><path d="M765.7 486.8L314.9 134.7A7.97 7.97 0 0 0 302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 0 0 0-50.4z"></path></svg>
               </button>
-              {
-                descriptionView
-                  ? (
-                    <div className='flex flex-col gap-2 mt-2'>
-                      {product?.description.split('/').map(des => {
-                        return <p className='text-[#444444] mb-1 text-sm dark:text-neutral-400 md:text-[16px]' key={des}>{des}</p>
-                      })}
-                    </div>
-                  )
-                  : ''
-              }
+              <div ref={contentRef} style={{ maxHeight: `${descriptionView}px`, overflow: 'hidden', transition: 'max-height 0.2s' }} className={`${descriptionView} transition-all duration-200 flex flex-col gap-2 mt-2`}>
+                {product?.description.split('/').map(des => {
+                  return <p className='text-[#444444] mb-1 text-sm dark:text-neutral-400 md:text-[16px]' key={des}>{des}</p>
+                })}
+              </div>
             </div>
             <div className='border-b pb-4 mt-4 dark:border-neutral-800'>
               <button onClick={(e: any) => {
                 e.preventDefault()
-                if (shippingView) {
-                  setShippingView(false)
+                if (shippingRotate === '-rotate-90') {
                   setShippingRotate('rotate-90')
                 } else {
-                  setShippingView(true)
                   setShippingRotate('-rotate-90')
                 }
               }} className='flex gap-2 justify-between w-full'>
                 <h5 className='text-[14px] tracking-widest text-main font-semibold md:text-[16px] dark:text-white'>CALCULA LOS COSTOS DE ENVIO</h5>
                 <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" className={`${shippingRotate} transition-all duration-150 ml-auto text-lg w-4 text-neutral-500`} xmlns="http://www.w3.org/2000/svg"><path d="M765.7 486.8L314.9 134.7A7.97 7.97 0 0 0 302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 0 0 0-50.4z"></path></svg>
               </button>
-              {
-                shippingView
-                  ? (
-                    <div className='mt-2'>
-                      <ShippingCost />
-                    </div>
-                  )
-                  : ''
-              }
+              <div ref={shippingRef} style={{ maxHeight: `${shippingView}px`, overflow: 'hidden', transition: 'max-height 0.2s' }} className='mt-2'>
+                <ShippingCost />
+              </div>
             </div>
             {
               design.product.titleInfo && design.product.titleInfo !== '' && design.product.textInfo && design.product.textInfo !== ''
@@ -301,26 +307,18 @@ export default function PageProduct ({ product }: { product: IProduct }) {
                   <div className='mt-4 pb-4 border-b dark:border-neutral-800'>
                     <button onClick={(e: any) => {
                       e.preventDefault()
-                      if (returnView) {
-                        setReturnView(false)
+                      if (returnRotate === '-rotate-90') {
                         setReturnRotate('rotate-90')
                       } else {
-                        setReturnView(true)
                         setReturnRotate('-rotate-90')
                       }
                     }} className='flex gap-2 w-full justify-between'>
                       <h5 className='text-[14px] tracking-widest text-main font-semibold md:text-[16px] dark:text-white'>{design.product.titleInfo.toUpperCase()}</h5>
                       <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" className={`${returnRotate} transition-all duration-150 ml-auto text-lg w-4 text-neutral-500`} xmlns="http://www.w3.org/2000/svg"><path d="M765.7 486.8L314.9 134.7A7.97 7.97 0 0 0 302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 0 0 0-50.4z"></path></svg>
                     </button>
-                    {
-                      returnView
-                        ? (
-                          <div className='mt-2'>
-                            <p className='text-sm mb-2 text-[#444444] dark:text-neutral-400 md:text-[16px]'>{design.product.textInfo}</p>
-                          </div>
-                        )
-                        : ''
-                    }
+                    <div ref={infoRef} style={{ maxHeight: `${returnView}px`, overflow: 'hidden', transition: 'max-height 0.2s' }} className='mt-2'>
+                      <p className='text-sm mb-2 text-[#444444] dark:text-neutral-400 md:text-[16px]'>{design.product.textInfo}</p>
+                    </div>
                   </div>
                 )
                 : ''
