@@ -30,9 +30,11 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
   const [mounted, setMounted] = useState(false)
   const [cartView, setCartView] = useState('hidden')
   const [cartOpacity, setCartOpacity] = useState('opacity-0')
+  const [cartPosition, setCartPosition] = useState('-mt-[30px]')
   const [cartPc, setCartPc] = useState(true)
   const [accountView, setAccountView] = useState('hidden')
   const [accountOpacity, setAccountOpacity] = useState('opacity-0')
+  const [accountPosition, setAccountPosition] = useState('-mt-[30px]')
   const [accountPc, setAccountPc] = useState(true)
   const [account, setAccount] = useState('Ingresar')
   const [navCategories, setNavCategories] = useState('hidden')
@@ -167,8 +169,8 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
             : ''
           : ''
       }
-      <div style={{ top: '-0.5px' }} className='sticky flex bg-white w-full z-40 dark:bg-neutral-900 dark:border-neutral-800'>
-        <div className='m-auto w-full absolute bg-white border-b flex justify-between px-2 650:py-0'>
+      <div style={{ top: '-0.5px' }} className='sticky flex w-full z-40'>
+        <div className='m-auto w-full absolute bg-white border-b flex justify-between px-2 650:py-0 dark:bg-neutral-900 dark:border-neutral-800'>
           <div className='m-auto w-[1280px] flex justify-between py-1 650:py-0'>
           <div className='hidden gap-2 650:flex'>
             {
@@ -225,6 +227,7 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
                           e.preventDefault()
                           setAccountView('flex')
                           setTimeout(() => {
+                            setAccountPosition('')
                             setAccountOpacity('opacity-1')
                           }, 50)
                         }}>
@@ -238,6 +241,7 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
                         <button onClick={(e: any) => {
                           e.preventDefault()
                           setAccountOpacity('opacity-0')
+                          setAccountPosition('-mt-[30px]')
                           setTimeout(() => {
                             setAccountView('hidden')
                           }, 200)
@@ -255,6 +259,7 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
                           <button onClick={() => {
                             setCartView('flex')
                             setTimeout(() => {
+                              setCartPosition('')
                               setCartOpacity('opacity-1')
                             }, 50)
                           }} className='flex h-full'>
@@ -276,6 +281,7 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
                       : (
                         <button className='h-full flex' onClick={() => {
                           setCartOpacity('opacity-0')
+                          setCartPosition('-mt-[30px]')
                           setTimeout(() => {
                             setCartView('hidden')
                           }, 200)
@@ -432,6 +438,7 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
             </div>
             <div onClick={() => {
               setAccountOpacity('opacity-0')
+              setAccountPosition('-mt-[30px]')
               setTimeout(() => {
                 setAccountView('hidden')
               }, 200)
@@ -441,24 +448,26 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
         <div onClick={() => {
           if (accountPc) {
             setAccountOpacity('opacity-0')
+            setAccountPosition('-mt-[30px]')
             setTimeout(() => {
               setAccountView('hidden')
             }, 200)
           }
-        }} className={`hidden w-full z-50 absolute top-[53px] 650:${accountView}`} style={{ height: 'calc(100vh - 91px)' }}>
+        }} className={`hidden ${accountPosition} w-full -z-10 transition-all duration-200 absolute top-[53px] 650:${accountView}`} style={{ height: 'calc(100vh - 91px)' }}>
           <div className='w-1440 ml-auto mr-auto'>
             <div className='ml-auto h-fit flex w-full 400:w-96'>
               <AccountLogin account={account} accountOpacity={accountOpacity} setAccount={setAccount} setAccountPc={setAccountPc} setAccountOpacity={setAccountOpacity} setAccountView={setAccountView} />
             </div>
           </div>
         </div>
-        <div className={`${cartView} transition-opacity duration-200 w-full z-50 absolute top-[51px] 650:hidden`} style={{ height: 'calc(100vh - 91px)' }}>
+        <div className={`${cartView} ${cartPosition} transition-all duration-200 w-full -z-10 absolute top-[51px] 650:hidden`} style={{ height: 'calc(100vh - 91px)' }}>
           <div className='w-1440 ml-auto mr-auto'>
             <div className='ml-auto h-fit flex w-full 400:w-96'>
               <NavbarCart setCartView={setCartView} cartOpacity={cartOpacity} setCartOpacity={setCartOpacity} />
             </div>
             <div onClick={() => {
               setCartOpacity('opacity-0')
+              setCartPosition('-mt-[30px]')
               setTimeout(() => {
                 setCartView('hidden')
               }, 200)
@@ -468,11 +477,12 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
         <div onClick={() => {
           if (cartPc) {
             setCartOpacity('opacity-0')
+            setCartPosition('-mt-[30px]')
             setTimeout(() => {
               setCartView('hidden')
             }, 200)
           }
-        }} className={`hidden z-50 absolute top-[53px] w-full 650:${cartView}`} style={{ height: 'calc(100vh - 91px)' }}>
+        }} className={`hidden ${cartPosition} -z-10 transition-all duration-200 absolute top-[53px] w-full 650:${cartView}`} style={{ height: 'calc(100vh - 91px)' }}>
           <div className='w-1440 ml-auto mr-auto'>
             <div className='ml-auto h-fit flex w-full 400:w-96'>
               <NavbarCart setCartView={setCartView} setCartPc={setCartPc} cartOpacity={cartOpacity} setCartOpacity={setCartOpacity} />
