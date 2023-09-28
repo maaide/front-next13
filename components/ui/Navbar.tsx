@@ -327,6 +327,7 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
                             e.preventDefault()
                             setAccountView('flex')
                             setTimeout(() => {
+                              setAccountPosition('')
                               setAccountOpacity('opacity-1')
                             }, 50)
                           }}>
@@ -340,6 +341,7 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
                           <button onClick={(e: any) => {
                             e.preventDefault()
                             setAccountOpacity('opacity-0')
+                            setAccountPosition('-mt-[30px]')
                             setTimeout(() => {
                               setAccountView('hidden')
                             }, 200)
@@ -375,6 +377,7 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
                             <button onClick={() => {
                               setCartView('flex')
                               setTimeout(() => {
+                                setCartPosition('')
                                 setCartOpacity('opacity-1')
                               }, 50)
                             }} className='flex h-full'>
@@ -396,6 +399,7 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
                         : (
                           <button onClick={() => {
                             setCartOpacity('opacity-0')
+                            setCartPosition('-mt-[30px]')
                             setTimeout(() => {
                               setCartView('hidden')
                             }, 200)
@@ -431,7 +435,7 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
           }
           </div>
         </div>
-        <div className={`${accountView} transition-opacity duration-200 w-full z-50 absolute top-[51px] 650:hidden`} style={{ height: 'calc(100vh - 91px)' }}>
+        <div className={`${accountView} ${accountPosition} transition-all duration-200 w-full -z-10 absolute top-[51px] 650:hidden`} style={{ height: 'calc(100vh - 91px)' }}>
           <div className='w-1440 ml-auto mr-auto'>
             <div className='ml-auto h-fit flex w-full 400:w-96'>
               <AccountLogin account={account} accountOpacity={accountOpacity} setAccount={setAccount} setAccountPc={setAccountPc} setAccountOpacity={setAccountOpacity} setAccountView={setAccountView} />
