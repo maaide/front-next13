@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
 import { Shipping } from '../../components/products'
 import { Button2 } from '../../components/ui'
-import { ICartProduct, IClient, IQuantityOffer, ISell, IShipping, IStoreData, Region } from '../../interfaces'
+import { IClient, ISell, IShipping, IStoreData } from '../../interfaces'
 import { NumberFormat, offer } from '../../utils'
 import Link from 'next/link'
 import Head from 'next/head'
