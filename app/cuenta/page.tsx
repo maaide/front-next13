@@ -69,7 +69,7 @@ export default function AccountPage () {
                       </thead>
                       {
                         buys.map(buy => (
-                          <tbody>
+                          <tbody key={buy._id}>
                             <td>{buy.buyOrder}</td>
                             <td>{buy.state} / {buy.shippingState}</td>
                             <td>${NumberFormat(buy.total)}</td>
