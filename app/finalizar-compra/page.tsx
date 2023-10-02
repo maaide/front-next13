@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useContext } from 'react'
 import { Shipping } from '../../components/products'
 import { Button2 } from '../../components/ui'
 import { ICartProduct, IClient, IQuantityOffer, ISell, IShipping, IStoreData, Region } from '../../interfaces'
@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import { initMercadoPago } from '@mercadopago/sdk-react'
+import CartContext from '@/context/cart/CartContext'
 
 declare const fbq: Function
 
@@ -38,7 +39,6 @@ const CheckOut = () => {
     phone: Number(Cookies.get('phone')) || undefined,
     buyOrder: ''
   })
-  const [cart, setCart] = useState<ICartProduct[]>()
   const [shipping, setShipping] = useState<IShipping[]>()
   const [details, setDetails] = useState(0)
   const [submitLoading, setSubmitLoading] = useState(false)
@@ -58,6 +58,7 @@ const CheckOut = () => {
   const [link, setLink] = useState('')
 
   const { data: session, status } = useSession()
+  const {cart, setCart} = useContext(CartContext)
 
   const user = session?.user as { firstName: string, lastName: string, email: string, _id: string }
 
@@ -72,7 +73,7 @@ const CheckOut = () => {
       const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/client-email/${user.email}`)
       const data: IClient = response.data
       if (data) {
-        setSell({...sell, address: data.address ? data.address : '', city: data.city ? data.city : '', details: data.departament ? data.departament : '', email: data.email, firstName: data.firstName ? data.firstName : '', lastName: data.lastName ? data.lastName : '', phone: data.phone ? Number(data.phone) : undefined, region: data.region ? data.region : ''})
+        setSell({...sell, address: data.address ? data.address : '', city: data.city ? data.city : '', details: data.departament ? data.departament : '', email: data.email, firstName: data.firstName ? data.firstName : '', lastName: data.lastName ? data.lastName : '', phone: data.phone ? Number(data.phone) : undefined, region: data.region ? data.region : '', total: cart?.reduce((bef: any, curr: any) => bef + curr.price * curr.quantity, 0), cart: cart!})
         setClientId(data._id!)
       }
       if (data.city && data.region) {
@@ -113,26 +114,16 @@ const CheckOut = () => {
           }
         })
         setShipping(request.data.data.courierServiceOptions)
+        if (typeof window !== 'undefined') {
+          const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/information`, { cart: cart, fbp: Cookies.get('_fbp'), fbc: Cookies.get('_fbc') })
+          fbq('track', 'AddPaymentInfo', {contents: cart?.map(product => ({ id: product._id, quantity: product.quantity, category: product.category.category, item_price: product.price, title: product.name })), currency: "clp", value: cart!.reduce((bef, curr) => curr.quantityOffers?.length ? offer(curr) : bef + curr.price * curr.quantity, 0) + Number(sell.shipping), content_ids: cart?.map(product => product._id), event_id: res.data._id})
+        }
       }
     }
   }
 
   useEffect(() => {
     getClientData()
-  }, [session])
-
-  const getCart = async () => {
-    if (typeof window !== 'undefined') {
-      const cartLocal: ICartProduct[] = JSON.parse(localStorage.getItem('cart')!)
-      setCart(cartLocal)
-      setSell({ ...sell, total: cartLocal.reduce((bef: any, curr: any) => bef + curr.price * curr.quantity, 0) })
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/information`, { cart: cartLocal, fbp: Cookies.get('_fbp'), fbc: Cookies.get('_fbc') })
-      fbq('track', 'AddPaymentInfo', {contents: cartLocal.map(product => ({ id: product._id, quantity: product.quantity, category: product.category.category, item_price: product.price, title: product.name })), currency: "clp", value: cartLocal.reduce((bef, curr) => curr.quantityOffers?.length ? offer(curr) : bef + curr.price * curr.quantity, 0) + Number(sell.shipping), content_ids: cartLocal.map(product => product._id), event_id: res.data._id})
-    }
-  }
-
-  useEffect(() => {
-    getCart()
   }, [])
 
   const getDomain = async () => {
@@ -185,8 +176,7 @@ const CheckOut = () => {
   }
 
   const shippingChange = (e: any) => {
-    const cartLocal = JSON.parse(localStorage.getItem('cart')!)
-    setSell({ ...sell, shippingMethod: e.target.className, shipping: e.target.value, shippingState: 'No empaquetado', total: cartLocal.reduce((bef: any, curr: any) => bef + curr.price * curr.quantity, 0) + Number(e.target.value) })
+    setSell({ ...sell, shippingMethod: e.target.className, shipping: e.target.value, shippingState: 'No empaquetado', total: sell.cart.reduce((bef, curr) => curr.quantityOffers?.length ? offer(curr) : bef + curr.price * curr.quantity, 0) + Number(e.target.value) })
   }
 
   const transbankSubmit = async (e: any) => {

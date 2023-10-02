@@ -6,7 +6,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import { ProductList, ShippingCart } from '../../components/products'
 import { Spinner } from '../../components/ui'
 import { useProducts } from '../../hooks'
-import { ICartProduct, IProduct, IQuantityOffer } from '../../interfaces'
+import { ICartProduct, IProduct } from '../../interfaces'
 import { NumberFormat, offer } from '../../utils'
 import Image from 'next/image'
 import DesignContext from '@/context/design/DesignContext'
@@ -15,27 +15,14 @@ import axios from 'axios'
 
 const CartPage = () => {
 
-  const {setCart} = useContext(CartContext)
+  const {cart, setCart} = useContext(CartContext)
   const { design } = useContext(DesignContext)
 
-  const [cartProducts, setCartProducts] = useState<ICartProduct[]>()
   const [shippingCost, setShippingCost] = useState(0)
   const [productsFiltered, setProductsFiltered] = useState<IProduct[]>([])
   const { data: session, status } = useSession()
 
   const user = session?.user as { firstName: string, lastName: string, email: string, _id: string, cart: [] }
-
-  const getCart = () => {
-    if (status === 'authenticated') {
-      setCartProducts(user.cart)
-    } else {
-      setCartProducts(JSON.parse(localStorage.getItem('cart')!))
-    }
-  }
-
-  useEffect(() => {
-    getCart()
-  }, [])
 
   const { products, isLoadingProducts } = useProducts('/products')
 
@@ -65,8 +52,8 @@ const CartPage = () => {
           <div className='block gap-8 1010:flex'>
             <div className='w-full 1010:w-7/12'>
               {
-                cartProducts?.length
-                  ? cartProducts?.map((product) => (
+                cart?.length
+                  ? cart?.map((product) => (
                     <div className='flex gap-4 mb-2 justify-between' key={product._id}>
                       <div className='flex gap-2'>
                         <Link href={`/productos/${product.slug}`}>
@@ -100,14 +87,13 @@ const CartPage = () => {
                           {
                             product.quantity > 1
                             ? <button className='pt-1 pb-1 pl-3 pr-2 text-main text-sm dark:border-neutral-500' onClick={async () => {
-                              const index = cartProducts.findIndex((item: ICartProduct) => item === product)
-                              const productEdit: ICartProduct = cartProducts[index]
+                              const index = cart.findIndex((item: ICartProduct) => item === product)
+                              const productEdit: ICartProduct = cart[index]
                               const updateProduct: ICartProduct = { ...productEdit, quantity: productEdit.quantity - 1 }
-                              cartProducts[index] = updateProduct
-                              const updateCart = JSON.stringify(cartProducts)
+                              cart[index] = updateProduct
+                              const updateCart = JSON.stringify(cart)
                               localStorage.setItem('cart', updateCart)
                               setCart(JSON.parse(localStorage.getItem('cart')!))
-                              setCartProducts(JSON.parse(localStorage.getItem('cart')!))
                               if (status === 'authenticated') {
                                 await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/account/${user._id}`, { cart: JSON.parse(localStorage.getItem('cart')!) })
                               }
@@ -118,14 +104,13 @@ const CartPage = () => {
                           {
                             product.quantity < product.stock!
                             ? <button className='pt-1 pb-1 pl-2 pr-3 text-main text-sm dark:text-neutral-500' onClick={async () => {
-                              const index = cartProducts.findIndex((item: ICartProduct) => item === product)
-                              const productEdit: ICartProduct = cartProducts[index]
+                              const index = cart.findIndex((item: ICartProduct) => item === product)
+                              const productEdit: ICartProduct = cart[index]
                               const updateProduct: ICartProduct = { ...productEdit, quantity: productEdit.quantity + 1 }
-                              cartProducts[index] = updateProduct
-                              const updateCart = JSON.stringify(cartProducts)
+                              cart[index] = updateProduct
+                              const updateCart = JSON.stringify(cart)
                               localStorage.setItem('cart', updateCart)
                               setCart(JSON.parse(localStorage.getItem('cart')!))
-                              setCartProducts(JSON.parse(localStorage.getItem('cart')!))
                               if (status === 'authenticated') {
                                 await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/account/${user._id}`, { cart: JSON.parse(localStorage.getItem('cart')!) })
                               }
@@ -140,7 +125,6 @@ const CartPage = () => {
                             const products = cartProduct.filter((item: ICartProduct) => item.variation?.variation !== product.variation?.variation)
                             localStorage.setItem('cart', JSON.stringify(products))
                             setCart(products)
-                            setCartProducts(products)
                             if (status === 'authenticated') {
                               await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/account/${user._id}`, { cart: JSON.parse(localStorage.getItem('cart')!) })
                             }
@@ -148,7 +132,6 @@ const CartPage = () => {
                             const products = cartProduct.filter((item: ICartProduct) => item.name !== product.name)
                             localStorage.setItem('cart', JSON.stringify(products))
                             setCart(products)
-                            setCartProducts(products)
                             if (status === 'authenticated') {
                               await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/account/${user._id}`, { cart: JSON.parse(localStorage.getItem('cart')!) })
                             }
@@ -170,7 +153,7 @@ const CartPage = () => {
               }
             </div>
             {
-              cartProducts?.length
+              cart?.length
                 ? (
                   <div className='w-full 1010:w-5/12'>
                     <div className='bg-[#F5F5F5] p-4 border border-[#F5F5F5] 450:p-6 dark:bg-neutral-800 dark:border-neutral-700'>
@@ -181,8 +164,8 @@ const CartPage = () => {
                         <div className='flex gap-2 justify-between mb-1'>
                           <span className='text-[14px] text-[#444444] dark:text-neutral-400'>Subtotal</span>
                           {
-                            cartProducts?.length
-                              ? <span className='text-[14px]'>${NumberFormat(cartProducts.reduce((bef, curr) => curr.quantityOffers ? offer(curr) : bef + curr.price * curr.quantity, 0))}</span>
+                            cart?.length
+                              ? <span className='text-[14px]'>${NumberFormat(cart.reduce((bef, curr) => curr.quantityOffers ? offer(curr) : bef + curr.price * curr.quantity, 0))}</span>
                               : ''
                           }
                         </div>
@@ -194,8 +177,8 @@ const CartPage = () => {
                       <div className='flex gap-2 justify-between'>
                         <span className='font-medium'>Total</span>
                         {
-                          cartProducts?.length
-                            ? <span className='font-medium'>${NumberFormat(cartProducts.reduce((bef, curr) => curr.quantityOffers ? offer(curr) : bef + curr.price * curr.quantity, 0) + Number(shippingCost))}</span>
+                          cart?.length
+                            ? <span className='font-medium'>${NumberFormat(cart.reduce((bef, curr) => curr.quantityOffers ? offer(curr) : bef + curr.price * curr.quantity, 0) + Number(shippingCost))}</span>
                             : ''
                         }
                       </div>

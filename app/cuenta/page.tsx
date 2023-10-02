@@ -1,6 +1,7 @@
 "use client"
 import { Spinner2, Spinner } from '@/components/ui'
 import { ISell } from '@/interfaces'
+import { NumberFormat } from '@/utils'
 import axios from 'axios'
 import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
@@ -21,7 +22,7 @@ export default function AccountPage () {
     if (user?.email) {
       const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/sells-client/${user.email}`)
       if (response.data.length) {
-        setBuys(response.data.length)
+        setBuys(response.data)
       }
       setLoadingSells(false)
     }
@@ -59,9 +60,24 @@ export default function AccountPage () {
                   </div>
                 )
                 : buys.length
-                  ? buys.map(buy => (
-                    <p key={buy._id}>{buy.firstName}</p>
-                  ))
+                  ? (
+                    <table>
+                      <thead>
+                        <th>Numero de compra</th>
+                        <th>Estado</th>
+                        <th>Total</th>
+                      </thead>
+                      {
+                        buys.map(buy => (
+                          <tbody>
+                            <td>{buy.buyOrder}</td>
+                            <td>{buy.state} / {buy.shippingState}</td>
+                            <td>${NumberFormat(buy.total)}</td>
+                          </tbody>
+                        ))
+                      }
+                    </table>
+                  )
                   : <p>No hay compras</p>
             }
           </div>
