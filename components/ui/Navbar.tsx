@@ -1,7 +1,7 @@
 "use client"
 import { useTheme } from 'next-themes'
 import Link from 'next/link'
-import React, { PropsWithChildren, useEffect, useState, useContext } from 'react'
+import React, { PropsWithChildren, useEffect, useState, useContext, useRef } from 'react'
 import { NavbarCart } from '../cart'
 import { usePathname, useRouter } from 'next/navigation'
 import CartContext from '../../context/cart/CartContext'
@@ -39,7 +39,7 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
   const [account, setAccount] = useState('Ingresar')
   const [navCategories, setNavCategories] = useState('hidden')
   const [navCategoriesOpacity, setNavCategoriesOpacity] = useState('opacity-0 -mt-[30px]')
-  const [categoriesPhone, setCategoriesPhone] = useState('hidden')
+  const [categoriesPhone, setCategoriesPhone] = useState(0)
   const [menuButtons, setMenuButtons] = useState('opacity-0')
   const [storeData, setStoreData] = useState<IStoreData>({
     address: '',
@@ -63,6 +63,8 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
   const pathname = usePathname()
   const router = useRouter()
   const {cart} = useContext(CartContext)
+
+  const categoriesPhoneRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     setMounted(true)
@@ -100,15 +102,12 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
     }
   }, [index])
 
-  const showCategories = () => {
-    if (categoriesPhone === 'hidden') {
-      setCategoriesPhone('block')
-      setRotate('-rotate-90')
-    } else {
-      setCategoriesPhone('hidden')
-      setRotate('rotate-90')
+  useEffect(() => {
+    if (categoriesPhoneRef.current) {
+      setCategoriesPhone(rotate === '-rotate-90' ? categoriesPhoneRef.current.scrollHeight : 0)
     }
-  }
+  }, [rotate])
+
   useEffect(() => {
     if (design.popup.tag !== '' && !(localStorage.getItem('popup') === 'true')) {
       setTimeout(() => {
@@ -513,7 +512,7 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
                 }} className='tracking-widest font-montserrat font-medium text-[#1c1b1b] w-full dark:text-white' href='/tienda'>TIENDA</Link>
                 {
                   categories.length
-                    ? <button onClick={showCategories}><svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 1024 1024" className={`${rotate} transition-all duration-150 ml-auto text-lg w-4 text-neutral-500`} xmlns="http://www.w3.org/2000/svg"><path d="M765.7 486.8L314.9 134.7A7.97 7.97 0 0 0 302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 0 0 0-50.4z"></path></svg></button>
+                    ? <button onClick={() => rotate === 'rotate-90' ? setRotate('-rotate-90') : setRotate('rotate-90')}><svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 1024 1024" className={`${rotate} transition-all duration-150 ml-auto text-lg w-4 text-neutral-500`} xmlns="http://www.w3.org/2000/svg"><path d="M765.7 486.8L314.9 134.7A7.97 7.97 0 0 0 302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 0 0 0-50.4z"></path></svg></button>
                     : <Link href='/tienda' onClick={() => {
                       setMenu('w-0 pl-0 pr-0 pt-6 pb-6')
                       setMenuButtons('opacity-0')
@@ -523,7 +522,7 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
                     }}><svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 1024 1024" className="ml-auto w-4 text-lg text-neutral-500" xmlns="http://www.w3.org/2000/svg"><path d="M765.7 486.8L314.9 134.7A7.97 7.97 0 0 0 302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 0 0 0-50.4z"></path></svg></Link>
                 }
               </div>
-              <div className={`${categoriesPhone} flex flex-col gap-2 mb-4`}>
+              <div ref={categoriesPhoneRef} style={{ maxHeight: `${categoriesPhone}px`, overflow: 'hidden', transition: 'max-height 0.2s' }} className={`${categoriesPhone} flex flex-col`}>
                 {
                   categories?.length
                     ? categories.map(category => (
@@ -533,7 +532,7 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
                         setTimeout(() => {
                           setIndex('hidden')
                         }, 150)
-                      }} href={`/tienda/${category.slug}`} className='flex gap-2' key={category._id}>
+                      }} href={`/tienda/${category.slug}`} className='flex gap-2 mb-2' key={category._id}>
                         <Image className='w-28 h-auto' src={category.image?.url!} width={112} height={112} alt={`Categoria ${category.category}`} />
                         <h2 className='mt-auto tracking-widest text-[#1c1b1b] font-medium mb-auto dark:text-white'>{category.category.toUpperCase()}</h2>
                       </Link>
