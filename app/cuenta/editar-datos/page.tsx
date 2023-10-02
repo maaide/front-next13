@@ -3,6 +3,7 @@ import { Spinner, Spinner2 } from '@/components/ui'
 import { City, IAccount, IClient, Region } from '@/interfaces'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 const EditAccountPage = () => {
@@ -20,6 +21,7 @@ const EditAccountPage = () => {
   const [loading, setLoading] = useState(false)
   const [loadingData, setLoadingData] = useState(false)
   
+  const router = useRouter()
   const { data: session } = useSession()
 
   const user = session?.user as { firstName: string, lastName: string, email: string, _id: string, cart: [] }
@@ -87,10 +89,12 @@ const EditAccountPage = () => {
     setClientData({ ...clientData, city: city?.countyName })
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: any) => {
+    e.preventDefault()
     setLoading(true)
     await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/account/${accountData._id}`, accountData)
     await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/clients/${clientData._id}`, clientData)
+    router.push('/cuenta')
     setLoading(false)
   }
 
