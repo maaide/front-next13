@@ -16,8 +16,8 @@ export default async function Page ({ params }: { params: { sell: string } }) {
     <div className='w-full px-2'>
       <div className='w-full max-w-[1280px] m-auto flex flex-col gap-4 py-14'>
         <h1 className="text-2xl font-medium tracking-widest">COMPRA {sell.buyOrder}</h1>
-        <div className="flex gap-8">
-          <div className="w-2/3 flex flex-col gap-4">
+        <div className="block gap-8 lg:flex">
+          <div className="w-full flex flex-col gap-4 lg:w-2/3">
             <h2 className="font-medium text-xl tracking-widest">PRODUCTOS</h2>
             <table className="border dark:border-neutral-800">
               <thead className="border-b text-left dark:border-neutral-800">
@@ -44,12 +44,12 @@ export default async function Page ({ params }: { params: { sell: string } }) {
               <p>ENVÍO</p>
               <p>${NumberFormat(sell.shipping)}</p>
             </div>
-            <div className="flex gap-2 justify-between">
+            <div className="flex gap-2 justify-between mb-6 lg:mb-0">
               <p>TOTAL</p>
               <p>${NumberFormat(sell.total)}</p>
             </div>
           </div>
-          <div className="w-1/3 flex flex-col gap-4">
+          <div className="w-full flex flex-col gap-4 lg:w-1/3">
             <div className="flex flex-col gap-2">
               <h2 className="text-xl tracking-widest font-medium">ESTADO</h2>
               <p>{sell.state} / {sell.shippingState}</p>

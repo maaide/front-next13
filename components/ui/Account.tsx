@@ -77,6 +77,7 @@ const AccountLogin: React.FC<Props> = ({ account, setAccount, setAccountPc, acco
     if (res?.ok) {
       setRegister({ firstName: '', lastName: '', email: '', password: '', confirmPassrword: '', marketing: false })
       setAccountOpacity('opacity-0')
+      setAccountPosition('-mt-[30px]')
       setTimeout(() => {
         setAccountView('hidden')
       }, 200)
@@ -108,6 +109,7 @@ const AccountLogin: React.FC<Props> = ({ account, setAccount, setAccountPc, acco
             <>
               <Link href='/cuenta' onClick={(e: any) => {
                 setAccountOpacity('opacity-0')
+                setAccountPosition('-mt-[30px]')
                 setTimeout(() => {
                   setAccountView('hidden')
                 }, 200)
