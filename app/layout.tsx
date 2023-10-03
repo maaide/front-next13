@@ -68,7 +68,7 @@ export default function RootLayout({
                         }}
                       />
                       <style jsx global>{`
-                        p, span, button, a, input, textarea, select {
+                        p, span, button, a, input, textarea, select, td {
                           font-family: ${poppins.style.fontFamily};
                         }
                         h1, h2, h3, h4, h5, th {

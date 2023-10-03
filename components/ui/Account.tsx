@@ -13,9 +13,10 @@ interface Props {
     accountOpacity: string
     setAccountOpacity: any
     setAccountView: any
+    setAccountPosition: any
 }
 
-const AccountLogin: React.FC<Props> = ({ account, setAccount, setAccountPc, accountOpacity, setAccountOpacity, setAccountView }) => {
+const AccountLogin: React.FC<Props> = ({ account, setAccount, setAccountPc, accountOpacity, setAccountOpacity, setAccountView, setAccountPosition }) => {
 
   const [login, setLogin] = useState({
     email: '',
@@ -51,6 +52,7 @@ const AccountLogin: React.FC<Props> = ({ account, setAccount, setAccountPc, acco
     if (res?.ok) {
       setLogin({ email: '', password: '' })
       setAccountOpacity('opacity-0')
+      setAccountPosition('-mt-[30px]')
       setTimeout(() => {
         setAccountView('hidden')
       }, 200)

@@ -48,7 +48,7 @@ export default function AccountPage () {
         <div className='w-full block gap-8 lg:flex'>
           <div className='w-full flex flex-col gap-2 sm:w-1/2 lg:w-1/4'>
             <h2 className='text-xl font-medium'>CUENTA</h2>
-            <Link className='p-1.5 rounded-md hover:bg-neutral-100 transition-colors duration-100 dark:hover:bg-neutral-800' href='/cuenta/editar-datos'>Editar datos</Link>
+            <Link className='p-1.5 rounded-md hover:bg-neutral-100 transition-all duration-200 dark:hover:bg-neutral-800' href='/cuenta/editar-datos'>Editar datos</Link>
             <button onClick={handleLogout} className='bg-main font-medium tracking-widest text-white h-10 dark:bg-neutral-800'>{closeLoading ? <Spinner2/> : 'CERRAR SESIÓN'}</button>
           </div>
           <div className='w-full mt-4 flex flex-col gap-4 lg:mt-0 lg:w-3/4'>
@@ -64,15 +64,15 @@ export default function AccountPage () {
                 )
                 : buys.length
                   ? (
-                    <table className='border'>
-                      <thead className='border-b text-left'>
+                    <table className='border dark:border-neutral-800'>
+                      <thead className='border-b text-left dark:border-neutral-800'>
                         <th className='p-1 font-medium tracking-widest'>NUMERO DE COMPRA</th>
                         <th className='p-1 font-medium tracking-widest'>ESTADO</th>
                         <th className='p-1 font-medium tracking-widest'>TOTAL</th>
                       </thead>
                       {
                         buys.map(buy => (
-                          <tbody key={buy._id} onClick={() => router.push(`/cuenta/${buy._id}`)} className='transition-all duration-200 hover:bg-neutral-100 cursor-pointer'>
+                          <tbody key={buy._id} onClick={() => router.push(`/cuenta/${buy._id}`)} className='transition-all duration-200 hover:bg-neutral-100 cursor-pointer dark:hover:bg-neutral-800'>
                             <td className='p-1'>{buy.buyOrder}</td>
                             <td className='p-1'>{buy.state} / {buy.shippingState}</td>
                             <td className='p-1'>${NumberFormat(buy.total)}</td>
