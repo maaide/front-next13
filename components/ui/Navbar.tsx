@@ -190,7 +190,11 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
             pathname !== '/finalizar-compra'
               ? <>
                 <div className='hidden gap-6 650:flex'>
-                  <Link className='mt-auto flex text-[15px] h-full font-medium text-[#1c1b1b] tracking-widest mb-auto dark:text-white' href='/'>
+                  <Link onMouseEnter={() => {
+                    setTimeout(() => {
+                      setNavCategories('hidden')
+                    }, 200)
+                  }} className='mt-auto flex text-[15px] h-full font-medium text-[#1c1b1b] tracking-widest mb-auto dark:text-white' href='/'>
                     <div className='mt-auto text-[15px] font-medium text-[#1c1b1b] tracking-widest mb-auto dark:text-white'>INICIO</div>
                   </Link>
                   <Link className='flex h-full' href='/tienda' onMouseEnter={() => {
@@ -213,7 +217,11 @@ export const Navbar: React.FC<PropsWithChildren<Props>> = ({ children , menu, se
                   }}>
                     <div className='mt-auto text-[15px] font-medium text-[#1c1b1b] tracking-widest mb-auto dark:text-white'>TIENDA</div>
                   </Link>
-                  <Link className='mt-auto text-[15px] font-medium text-[#1c1b1b] tracking-widest mb-auto dark:text-white' href='/blog'>
+                  <Link onMouseEnter={() => {
+                    setTimeout(() => {
+                      setNavCategories('hidden')
+                    }, 200)
+                  }} className='mt-auto text-[15px] font-medium text-[#1c1b1b] tracking-widest mb-auto dark:text-white' href='/blog'>
                     <div className='mt-auto text-[15px] font-medium text-[#1c1b1b] tracking-widest mb-auto dark:text-white'>BLOG</div>
                   </Link>
                   <Link className='mt-auto text-[15px] font-medium text-[#1c1b1b] tracking-widest mb-auto dark:text-white' href='/contacto'>

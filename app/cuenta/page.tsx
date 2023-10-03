@@ -5,6 +5,7 @@ import { NumberFormat } from '@/utils'
 import axios from 'axios'
 import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 export default function AccountPage () {
@@ -14,6 +15,8 @@ export default function AccountPage () {
   const [loadingSells, setLoadingSells] = useState(false)
 
   const { data: session } = useSession()
+
+  const router = useRouter()
 
   const user = session?.user as { firstName: string, lastName: string, email: string, _id: string, cart: [] }
 
@@ -61,18 +64,18 @@ export default function AccountPage () {
                 )
                 : buys.length
                   ? (
-                    <table>
-                      <thead>
-                        <th>Numero de compra</th>
-                        <th>Estado</th>
-                        <th>Total</th>
+                    <table className='border'>
+                      <thead className='border-b text-left'>
+                        <th className='p-1 font-medium tracking-widest'>NUMERO DE COMPRA</th>
+                        <th className='p-1 font-medium tracking-widest'>ESTADO</th>
+                        <th className='p-1 font-medium tracking-widest'>TOTAL</th>
                       </thead>
                       {
                         buys.map(buy => (
-                          <tbody key={buy._id}>
-                            <td>{buy.buyOrder}</td>
-                            <td>{buy.state} / {buy.shippingState}</td>
-                            <td>${NumberFormat(buy.total)}</td>
+                          <tbody key={buy._id} onClick={() => router.push(`/cuenta/${buy._id}`)} className='transition-all duration-200 hover:bg-neutral-100 cursor-pointer'>
+                            <td className='p-1'>{buy.buyOrder}</td>
+                            <td className='p-1'>{buy.state} / {buy.shippingState}</td>
+                            <td className='p-1'>${NumberFormat(buy.total)}</td>
                           </tbody>
                         ))
                       }

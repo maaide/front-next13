@@ -71,7 +71,7 @@ export default function RootLayout({
                         p, span, button, a, input, textarea, select {
                           font-family: ${poppins.style.fontFamily};
                         }
-                        h1, h2, h3, h4, h5 {
+                        h1, h2, h3, h4, h5, th {
                           font-family: ${montserrat.style.fontFamily};
                         }
                       `}</style>
