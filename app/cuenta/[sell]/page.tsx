@@ -29,8 +29,8 @@ export default async function Page ({ params }: { params: { sell: string } }) {
               {
                 sell.cart.map(product => (
                   <tbody key={product._id}>
-                    <td className="flex gap-2 p-1">
-                      <Image src={product.image} alt={`Imagen del producto ${product.name}`} width={100} height={100} />
+                    <td className="flex gap-2 p-1 h-20 sm:h-auto">
+                      <Image src={product.image} alt={`Imagen del producto ${product.name}`} width={100} height={100} className="hidden sm:flex" />
                       <p className="my-auto">{product.name}</p>
                     </td>
                     <td className="my-auto p-1">{product.quantity}</td>
