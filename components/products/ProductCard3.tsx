@@ -93,7 +93,7 @@ export default function ProductCard3 ({ product, category }: { product: IProduct
         {
           product.variations?.variations.length
             ? product.variations.variations[0].variation !== ''
-              ? <button className='pt-1.5 pb-1.5 text-xs bg-button border border-button transition-all duration-200 tracking-widest font-medium text-white w-48 hover:bg-transparent hover:text-button' onClick={() => router.push(`/tienda${category.slug}/${product.slug}`)}>Ver variantes</button>
+              ? <button className='pt-1.5 pb-1.5 text-xs bg-button border border-button transition-all duration-200 tracking-widest font-medium text-white w-40 hover:bg-transparent hover:text-button 450:w-48' onClick={() => router.push(`/tienda${category.slug}/${product.slug}`)}>Ver variantes</button>
               : <Button2AddToCart tempCartProduct={tempCartProduct} />
             : <Button2AddToCart tempCartProduct={tempCartProduct} />
         }
