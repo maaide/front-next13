@@ -15,7 +15,7 @@ const ContactPage = () => {
     message: '',
     images: []
   })
-  const [sending, setSending] = useState('Enviar')
+  const [sending, setSending] = useState('ENVIAR')
 
   const inputChange = (e: any) => {
     setFormContact({ ...formContact, [e.target.name]: e.target.value })
@@ -46,10 +46,10 @@ const ContactPage = () => {
         'Content-Type': 'multipart/form-data'
       }
     })
-    setSending('Mensaje enviado')
+    setSending('MENSAJE ENVIADO')
     setFormContact({name: '', email: '', message: '', images: []})
     setTimeout(() => {
-      setSending('Enviar')
+      setSending('ENVIAR')
     }, 3000)
   }
 
@@ -72,7 +72,7 @@ const ContactPage = () => {
                 <input type='email' placeholder='Email' name='email' onChange={inputChange} value={formContact.email} className='p-2 text-sm w-full rounded border mb-3 focus:outline-none focus:border-main focus:ring-1 focus:ring-main dark:border-neutral-600' />
                 <textarea placeholder='Mensaje' name='message' onChange={inputChange} value={formContact.message} className='p-2 text-sm w-full rounded border h-20 focus:outline-none focus:border-main focus:ring-1 focus:ring-main dark:border-neutral-600' />
                 <input type='file' onChange={imageChange} className='text-sm mt-2 mb-4 block w-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:bg-main/10 file:text-main hover:file:bg-main/20 dark:file:bg-neutral-600 dark:file:text-white' />
-                <button onClick={handleSubmit} className=' w-full h-9 pl-7 pr-7 rounded-md bg-main transition-colors duration-200 text-white hover:bg-white hover:text-main'>
+                <button onClick={handleSubmit} className='w-full h-9 tracking-widest font-medium text-sm border border-main bg-main transition-colors duration-200 text-white hover:bg-white hover:text-main dark:bg-neutral-700 dark:border-neutral-700 dark:hover:bg-transparent dark:hover:text-neutral-500'>
                   {
                     sending === ''
                       ? (

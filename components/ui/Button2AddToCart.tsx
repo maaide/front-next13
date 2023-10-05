@@ -15,13 +15,13 @@ declare const fbq: Function
 export const Button2AddToCart: React.FC<Props> = ({ tempCartProduct }) => {
 
   const {setCart} = useContext(CartContext)
-  const [text, setText] = useState('Añadir al carrito')
+  const [text, setText] = useState('AÑADIR AL CARRITO')
   const { data: session, status } = useSession()
 
   const user = session?.user as { firstName: string, lastName: string, email: string, _id: string }
 
   const addToCart = async () => {
-    setText('Producto añadido')
+    setText('PRODUCTO AÑADIDO')
     if (localStorage.getItem('cart')) {
       const cart: ICartProduct[] = JSON.parse(localStorage.getItem('cart')!)
       if (cart.find((product: ICartProduct) => product.name === tempCartProduct.name)) {
@@ -61,12 +61,12 @@ export const Button2AddToCart: React.FC<Props> = ({ tempCartProduct }) => {
       await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/account/${user._id}`, { cart: cartLocal })
     }
     setTimeout(() => {
-      setText('Añadir al carrito')
+      setText('AÑADIR AL CARRITO')
     }, 3000)
   }
 
   return (
-    <button onClick={addToCart} className='pt-1.5 pb-1.5 rounded-md bg-button text-white text-sm pl-3 pr-3 450:pr-6 450:pl-6 580:pr-8 580:pl-8'>
+    <button onClick={addToCart} className='py-1.5 w-48 transition-all duration-200 border border-button bg-button text-white text-xs tracking-widest font-medium hover:bg-transparent hover:text-button'>
       {text}
     </button>
   )

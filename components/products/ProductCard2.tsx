@@ -94,7 +94,7 @@ export default function ProductCard2 ({ product }: { product: IProduct }) {
         {
           product.variations?.variations.length
             ? product.variations.variations[0].variation !== ''
-              ? <Link href={`/tienda/${product.category.slug}/${product.slug}`} className='pt-1.5 pb-1.5 text-sm rounded-md bg-button text-white pl-6 pr-6 450:pl-8 450:pr-8'>Ver variantes</Link>
+              ? <Link href={`/tienda/${product.category.slug}/${product.slug}`} className='py-1.5 text-xs font-medium transition-all duration-200 border border-button bg-button text-white hover:bg-transparent hover:text-button'><button className='w-48 tracking-widest'>VER VARIANTES</button></Link>
               : <Button2AddToCart tempCartProduct={tempCartProduct} />
             : <Button2AddToCart tempCartProduct={tempCartProduct} />
         }

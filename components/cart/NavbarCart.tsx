@@ -144,13 +144,13 @@ export const NavbarCart: React.FC<Props> = ({ setCartView, setCartPc, cartOpacit
           </>
           : <>
             <p className='mb-4 text-[#444444] dark:text-neutral-400'>No tienes productos añadidos al carrito</p>
-            <Link className='pt-1.5 pb-1.5 rounded-md transition-colors duration-200 bg-main text-white hover:bg-white hover:text-main dark:bg-[#22262c] dark:hover:text-main dark:hover:bg-white' href='/tienda' onClick={() => {
+            <Link className='py-1.5 border border-main transition-colors duration-200 bg-main text-white hover:bg-transparent hover:text-main dark:bg-neutral-700 dark:border-neutral-700 dark:hover:text-neutral-500 hover:dark:bg-transparent' href='/tienda' onClick={() => {
               setCartOpacity('opacity-0')
               setCartPosition('-mt-[30px]')
               setTimeout(() => {
                 setCartView('hidden')
               }, 200)
-            }}><button className='w-full'>Ir a la tienda</button></Link>
+            }}><button className='w-full tracking-widest font-medium text-sm'>IR A LA TIENDA</button></Link>
           </>
       }
     </div>

@@ -248,7 +248,7 @@ export default function PageProduct ({ product }: { product: IProduct }) {
                         ? product.variations.variations[0].variation !== ''
                           ? tempCartProduct.variation
                             ? <ButtonAddToCart tempCartProduct={tempCartProduct} />
-                            : <ButtonNone>Añadir al carrito</ButtonNone>
+                            : <ButtonNone>AÑADIR AL CARRITO</ButtonNone>
                           : <ButtonAddToCart tempCartProduct={tempCartProduct} />
                         : <ButtonAddToCart tempCartProduct={tempCartProduct} />
                     }
