@@ -62,10 +62,10 @@ export const NavbarCart: React.FC<Props> = ({ setCartView, setCartPc, cartOpacit
                             : ''
                         }
                       </div>
-                      <div className='flex border border-[#444444] w-fit rounded-md dark:border-neutral-500'>
+                      <div className='flex border border-button w-fit'>
                         {
                           product.quantity > 1
-                            ? <button className='pt-1 pb-1 pl-3 pr-2 text-[#444444] text-sm dark:text-neutral-500' onClick={async () => {
+                            ? <button className='pt-1 pb-1 pl-3 pr-2 text-button text-sm' onClick={async () => {
                               const index = cart.findIndex((item: ICartProduct) => item === product)
                               const productEdit: ICartProduct = cart[index]
                               const updateProduct: ICartProduct = { ...productEdit, quantity: productEdit.quantity - 1 }
@@ -77,12 +77,12 @@ export const NavbarCart: React.FC<Props> = ({ setCartView, setCartPc, cartOpacit
                                 await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/account/${user._id}`, { cart: JSON.parse(localStorage.getItem('cart')!) })
                               }
                             }}>-</button>
-                            : <button className='pt-1 pb-1 pl-3 pr-2 text-[#444444]/50 cursor-not-allowed text-sm  dark:text-neutral-500/50'>-</button>
+                            : <button className='pt-1 pb-1 pl-3 pr-2 text-button/50 cursor-not-allowed text-sm'>-</button>
                         }
-                        <span className='text-[#444444] m-auto w-4 text-center text-sm dark:text-neutral-500'>{product.quantity}</span>
+                        <span className='text-button m-auto w-4 text-center text-sm'>{product.quantity}</span>
                         {
                           product.quantity < product.stock!
-                            ? <button className='pt-1 pb-1 pl-2 pr-3 text-[#444444] text-sm dark:text-neutral-500' onClick={async () => {
+                            ? <button className='pt-1 pb-1 pl-2 pr-3 text-button text-sm' onClick={async () => {
                               const index = cart.findIndex((item: ICartProduct) => item === product)
                               const productEdit: ICartProduct = cart[index]
                               const updateProduct: ICartProduct = { ...productEdit, quantity: productEdit.quantity + 1 }
@@ -94,7 +94,7 @@ export const NavbarCart: React.FC<Props> = ({ setCartView, setCartPc, cartOpacit
                                 await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/account/${user._id}`, { cart: JSON.parse(localStorage.getItem('cart')!) })
                               }
                             }}>+</button>
-                            : <button className='pt-1 pb-1 pl-2 pr-3 text-[#444444]/50 cursor-not-allowed text-sm dark:text-neutral-400/50'>+</button>
+                            : <button className='pt-1 pb-1 pl-2 pr-3 text-button/50 cursor-not-allowed text-sm'>+</button>
                         }
                       </div>
                     </div>
@@ -126,13 +126,13 @@ export const NavbarCart: React.FC<Props> = ({ setCartView, setCartPc, cartOpacit
               ))
             }
             <div className='mt-4'>
-              <Link className='pt-1.5 pb-1.5 rounded-md transition-colors duration-200 bg-button text-white hover:bg-white hover:text-main' onClick={() => {
+              <Link className='pt-1.5 pb-1.5 border border-button font-medium text-sm transition-colors duration-200 bg-button text-white hover:bg-white hover:text-button hover:dark:bg-transparent' onClick={() => {
                 setCartOpacity('opacity-0')
                 setCartPosition('-mt-[30px]')
                 setTimeout(() => {
                   setCartView('hidden')
                 }, 200)
-              }} href='/finalizar-compra'><button className='w-full'>Finalizar compra</button></Link>
+              }} href='/finalizar-compra'><button className='w-full tracking-widest'>FINALIZAR COMPRA</button></Link>
               <Link href='/carrito' onClick={() => {
                 setCartOpacity('opacity-0')
                 setCartPosition('-mt-[30px]')

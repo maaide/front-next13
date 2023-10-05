@@ -83,10 +83,10 @@ const CartPage = () => {
                         </div>
                       </div>
                       <div className='flex gap-4'>
-                        <div className='flex border border-main w-fit h-fit mt-auto mb-auto rounded-md dark:border-neutral-500'>
+                        <div className='flex border border-button w-fit h-fit mt-auto mb-auto'>
                           {
                             product.quantity > 1
-                            ? <button className='pt-1 pb-1 pl-3 pr-2 text-main text-sm dark:border-neutral-500' onClick={async () => {
+                            ? <button className='pt-1 pb-1 pl-3 pr-2 text-button text-sm' onClick={async () => {
                               const index = cart.findIndex((item: ICartProduct) => item === product)
                               const productEdit: ICartProduct = cart[index]
                               const updateProduct: ICartProduct = { ...productEdit, quantity: productEdit.quantity - 1 }
@@ -98,12 +98,12 @@ const CartPage = () => {
                                 await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/account/${user._id}`, { cart: JSON.parse(localStorage.getItem('cart')!) })
                               }
                             }}>-</button>
-                            : <button className='pt-1 pb-1 pl-3 pr-2 text-main/50 cursor-not-allowed text-sm dark:text-neutral-500'>-</button>
+                            : <button className='pt-1 pb-1 pl-3 pr-2 text-button/50 cursor-not-allowed text-sm'>-</button>
                           }
-                          <span className='text-main m-auto w-4 text-center text-sm dark:text-neutral-500'>{product.quantity}</span>
+                          <span className='text-button m-auto w-4 text-center text-sm'>{product.quantity}</span>
                           {
                             product.quantity < product.stock!
-                            ? <button className='pt-1 pb-1 pl-2 pr-3 text-main text-sm dark:text-neutral-500' onClick={async () => {
+                            ? <button className='pt-1 pb-1 pl-2 pr-3 text-button text-sm' onClick={async () => {
                               const index = cart.findIndex((item: ICartProduct) => item === product)
                               const productEdit: ICartProduct = cart[index]
                               const updateProduct: ICartProduct = { ...productEdit, quantity: productEdit.quantity + 1 }
@@ -115,7 +115,7 @@ const CartPage = () => {
                                 await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/account/${user._id}`, { cart: JSON.parse(localStorage.getItem('cart')!) })
                               }
                             }}>+</button>
-                            : <button className='pt-1 pb-1 pl-2 pr-3 text-main/50 cursor-not-allowed dark:text-neutral-500'>+</button>
+                            : <button className='pt-1 pb-1 pl-2 pr-3 text-button/50 cursor-not-allowed'>+</button>
                           }
                         </div>
                         <button onClick={async () => {
@@ -183,7 +183,7 @@ const CartPage = () => {
                         }
                       </div>
                       <div className='mt-3 ml-auto w-full flex'>
-                        <Link className='pt-1.5 w-full pb-1.5 rounded-md transition-colors duration-200 bg-button text-white hover:bg-white hover:text-main' href='/finalizar-compra'><button className='w-full'>Finalizar compra</button></Link>
+                        <Link className='pt-1.5 w-full pb-1.5 font-medium border border-button transition-colors duration-200 bg-button text-white hover:bg-transparent hover:text-button' href='/finalizar-compra'><button className='w-full tracking-widest'>FINALIZAR COMPRA</button></Link>
                       </div>
                     </div>
                   </div>

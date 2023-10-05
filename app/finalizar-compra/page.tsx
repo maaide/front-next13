@@ -396,7 +396,7 @@ const CheckOut = () => {
             <h2 className='mb-2 font-medium tracking-widest text-[16px] md:text-[18px]'>CUPON DE DESCUENTO</h2>
             <div className='flex gap-2'>
               <input type='text' placeholder='Cupon' className='border text-[14px] p-1 rounded w-52 focus:outline-none focus:border-main focus:ring-1 focus:ring-main dark:border-neutral-600' />
-              <Button2>Agregar</Button2>
+              <Button2>AGREGAR</Button2>
             </div>
           </div>
           <div className='mt-2 mb-2 pb-2 border-b dark:border-neutral-700'>
@@ -560,21 +560,21 @@ const CheckOut = () => {
               <div className='mt-auto mb-auto'><Link href='/carrito'><span className='flex gap-2 text-sm'><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" className="mt-auto mb-auto" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M724 218.3V141c0-6.7-7.7-10.4-12.9-6.3L260.3 486.8a31.86 31.86 0 0 0 0 50.3l450.8 352.1c5.3 4.1 12.9.4 12.9-6.3v-77.3c0-4.9-2.3-9.6-6.1-12.6l-360-281 360-281.1c3.8-3 6.1-7.7 6.1-12.6z"></path></svg>Regresar al carrito</span></Link></div>
               {
                 sell.pay === ''
-                  ? <button onClick={(e: any) => e.preventDefault()} className='w-24 h-9 rounded-md bg-button/50 text-white cursor-not-allowed'>{submitLoading ? <Spinner2 /> : 'Pagar'}</button>
+                  ? <button onClick={(e: any) => e.preventDefault()} className='w-28 h-10 bg-button/50 tracking-widest font-medium text-white cursor-not-allowed'>{submitLoading ? <Spinner2 /> : 'PAGAR'}</button>
                   : sell.pay === 'WebPay Plus'
                     ? (
                       <form action={url} method="POST" id='formTransbank'>
                         <input type="hidden" name="token_ws" value={token} />
-                        <button onClick={transbankSubmit} className='w-24 h-9 rounded-md bg-button text-white cursor-pointer'>{submitLoading ? <Spinner2 /> : 'Pagar'}</button>
+                        <button onClick={transbankSubmit} className='w-28 h-10 bg-button transition-all duration-200 border border-button hover:bg-transparent tracking-widest font-medium text-white cursor-pointer hover:text-button'>{submitLoading ? <Spinner2 /> : 'PAGAR'}</button>
                       </form>
                     )
                     : sell.pay === 'MercadoPago'
                       ? link !== ''
-                        ? <button onClick={mercadoSubmit} className='w-24 h-9 rounded-md bg-button text-white'>{submitLoading ? <Spinner2 /> : 'Pagar'}</button>
-                        : <button onClick={(e: any) => e.preventDefault()} className='w-24 h-9 rounded-md bg-button/50 text-white cursor-not-allowed'>{submitLoading ? <Spinner2 /> : 'Pagar'}</button>
+                        ? <button onClick={mercadoSubmit} className='w-28 h-10 rounded-md bg-button transition-all duration-200 border border-button hover:bg-transparent text-white hover:text-button'>{submitLoading ? <Spinner2 /> : 'PAGAR'}</button>
+                        : <button onClick={(e: any) => e.preventDefault()} className='w-28 h-10 tracking-widest font-medium bg-button/50 text-white cursor-not-allowed'>{submitLoading ? <Spinner2 /> : 'PAGAR'}</button>
                       : sell.pay === 'Pago en la entrega'
-                        ? <button onClick={handleSubmit} className='w-24 h-9 rounded-md bg-button text-white'>{submitLoading ? <Spinner2 /> : 'Pagar'}</button>
-                        : <button onClick={(e: any) => e.preventDefault()} className='w-24 h-9 rounded-md bg-button/50 text-white cursor-not-allowed'>{submitLoading ? <Spinner2 /> : 'Pagar'}</button>
+                        ? <button onClick={handleSubmit} className='w-28 h-10 rounded-md bg-button transition-all duration-200 border border-button hover:bg-transparent text-white hover:text-button'>{submitLoading ? <Spinner2 /> : 'PAGAR'}</button>
+                        : <button onClick={(e: any) => e.preventDefault()} className='w-28 h-10 tracking-widest font-medium bg-button/50 text-white cursor-not-allowed'>{submitLoading ? <Spinner2 /> : 'PAGAR'}</button>
               }
             </div>
           </div>
@@ -614,7 +614,7 @@ const CheckOut = () => {
               <h2 className='mb-2 text-main tracking-widest font-medium text-[18px] dark:text-white'>CUPON DE DESCUENTO</h2>
               <div className='flex gap-2'>
                 <input type='text' placeholder='Cupon' className='border p-1 rounded text-[14px] w-72 focus:outline-none focus:border-main focus:ring-1 focus:ring-main dark:border-neutral-600' />
-                <Button2>Agregar</Button2>
+                <Button2>AGREGAR</Button2>
               </div>
             </div>
             <div className='mb-2 pb-2 border-b dark:border-neutral-700'>
