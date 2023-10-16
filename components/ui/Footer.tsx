@@ -17,12 +17,22 @@ export const Footer = () => {
     logo: { public_id: '', url: '' },
     logoWhite: { public_id: '', url: '' }
   })
+  const [politics, setPolitics] = useState({
+    terms: '',
+    shipping: '',
+    privacy: '',
+    devolutions: ''
+  })
   const [categories, setCategories] = useState<ICategory[]>([])
 
   const getStoreData = async () => {
     const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/store-data`)
     if (response.data) {
       setStoreData(response.data)
+    }
+    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/politics`)
+    if (res.data) {
+      setPolitics(res.data)
     }
   }
 
@@ -87,9 +97,26 @@ export const Footer = () => {
           </div>
           <div>
             <h3 className='text-white mb-2'>POLITICAS</h3>
-            <Link className='block text-white text-sm mb-1' href='/politicas-privacidad'>Politicas de privacidad</Link>
-            <Link className='block text-white text-sm mb-1' href='/terminos-y-condiciones'>Politicas de devoluciones y reembolsos</Link>
-            <Link className='block text-white text-sm mb-1' href='/envio'>Politicas de envío</Link>
+            {
+              politics.terms && politics.terms !== ''
+                ? <Link className='block text-white text-sm mb-1' href='/terminos-y-condiciones'>Terminos y condiciones</Link>
+                : ''
+            }
+            {
+              politics.privacy && politics.privacy !== ''
+                ? <Link className='block text-white text-sm mb-1' href='/politicas-de-privacidad'>Politicas de privacidad</Link>
+                : ''
+            }
+            {
+              politics.devolutions && politics.devolutions !== ''
+                ? <Link className='block text-white text-sm mb-1' href='/politicas-de-devoluciones'>Politicas de devoluciones y reembolsos</Link>
+                : ''
+            }
+            {
+              politics.shipping && politics.shipping !== ''
+                ? <Link className='block text-white text-sm mb-1' href='/politicas-de-envios'>Politicas de envío</Link>
+                : ''
+            }
           </div>
         </div>
         <div className='mt-4'>
